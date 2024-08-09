@@ -1,8 +1,52 @@
-[gd_scene load_steps=2 format=3 uid="uid://sho53lxaepy6"]
+[gd_scene load_steps=5 format=3 uid="uid://sho53lxaepy6"]
 
 [ext_resource type="Texture2D" uid="uid://cwvl0smgd7bwe" path="res://sprites/BaseCard.png" id="1_vt7m0"]
+[ext_resource type="Texture2D" uid="uid://sd8qi8ew5vwc" path="res://sprites/Mana.png" id="2_gvdyr"]
+[ext_resource type="FontFile" uid="uid://cdnrutcvac7fd" path="res://sprites/CaslonAntique.ttf" id="3_r0xo3"]
+[ext_resource type="Texture2D" uid="uid://cwyvnqrsqg1a" path="res://sprites/Sword.png" id="4_0crru"]
 
 [node name="Card" type="Node2D"]
 
 [node name="BaseCard" type="Sprite2D" parent="."]
 texture = ExtResource("1_vt7m0")
+
+[node name="CostDisplay" type="Node2D" parent="."]
+position = Vector2(127, -211)
+
+[node name="BaseCost" type="Sprite2D" parent="CostDisplay"]
+position = Vector2(-1.90735e-06, 5.72205e-06)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("2_gvdyr")
+
+[node name="CostLabel" type="Label" parent="CostDisplay"]
+offset_left = -8.0
+offset_top = -22.0
+offset_right = 43.0
+offset_bottom = 28.0
+theme_override_fonts/font = ExtResource("3_r0xo3")
+theme_override_font_sizes/font_size = 40
+text = "2
+"
+
+[node name="CardName" type="Node2D" parent="."]
+
+[node name="NameLabel" type="Label" parent="CardName"]
+offset_left = -64.0
+offset_top = -190.0
+offset_right = 83.0
+offset_bottom = -153.0
+theme_override_fonts/font = ExtResource("3_r0xo3")
+theme_override_font_sizes/font_size = 30
+text = "Card Name
+"
+
+[node name="CardImage" type="Sprite2D" parent="."]
+position = Vector2(6, -41)
+scale = Vector2(1.45, 1.65)
+texture = ExtResource("4_0crru")
+
+[node name="CardDescription" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("3_r0xo3")
+text = "Description"
