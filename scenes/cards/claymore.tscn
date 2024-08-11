@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://cy3ekvhyb2xuh"]
+
+[ext_resource type="PackedScene" uid="uid://sho53lxaepy6" path="res://scenes/Card.tscn" id="1_nk760"]
+[ext_resource type="Texture2D" uid="uid://cwyvnqrsqg1a" path="res://sprites/CardImages/Sword.png" id="2_nfp3l"]
+
+[node name="Claymore" type="Node2D"]
+
+[node name="Card" parent="." node_paths=PackedStringArray("CardImage") instance=ExtResource("1_nk760")]
+position = Vector2(521, 199)
+CardName = "TESTClaymore"
+PlayDescription = "Deal 3 DMG to a target"
+ThrowDescription = "Weaken target's attack DMG by 3"
+CardCost = 1
+CardImage = NodePath("../CardImage")
+
+[node name="CardImage" type="Sprite2D" parent="."]
+position = Vector2(532, 159)
+scale = Vector2(1.5275, 1.98875)
+texture = ExtResource("2_nfp3l")
