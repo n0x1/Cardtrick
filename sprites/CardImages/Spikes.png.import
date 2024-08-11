@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cwyvnqrsqg1a"
-path="res://.godot/imported/Sword.png-e78a39d3653def840215ceb6411047be.ctex"
+uid="uid://tgaq0ba0tnpq"
+path="res://.godot/imported/Spikes.png-7d23d93500fd098fb310e9b057e4b136.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/Sword.png"
-dest_files=["res://.godot/imported/Sword.png-e78a39d3653def840215ceb6411047be.ctex"]
+source_file="res://sprites/CardImages/Spikes.png"
+dest_files=["res://.godot/imported/Spikes.png-7d23d93500fd098fb310e9b057e4b136.ctex"]
 
 [params]
 

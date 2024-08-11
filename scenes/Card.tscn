@@ -1,0 +1,79 @@
+[gd_scene load_steps=6 format=3 uid="uid://sho53lxaepy6"]
+
+[ext_resource type="Script" path="res://scripts/Card.gd" id="1_74co5"]
+[ext_resource type="Texture2D" uid="uid://cwvl0smgd7bwe" path="res://sprites/CardImages/BaseCard.png" id="1_vt7m0"]
+[ext_resource type="Texture2D" uid="uid://sd8qi8ew5vwc" path="res://sprites/CardImages/Mana.png" id="2_gvdyr"]
+[ext_resource type="FontFile" uid="uid://cdnrutcvac7fd" path="res://sprites/CaslonAntique.ttf" id="3_r0xo3"]
+[ext_resource type="Texture2D" uid="uid://cwyvnqrsqg1a" path="res://sprites/CardImages/Sword.png" id="4_0crru"]
+
+[node name="Card" type="Node2D"]
+position = Vector2(174, 253)
+script = ExtResource("1_74co5")
+CardName = "I am a new card name!"
+PlayDescription = "Newdesc"
+ThrowDescription = "newdesc"
+CardCost = 3
+
+[node name="BaseCard" type="Sprite2D" parent="."]
+texture = ExtResource("1_vt7m0")
+
+[node name="CostDisplay" type="Node2D" parent="."]
+position = Vector2(127, -211)
+
+[node name="BaseCostSprite" type="Sprite2D" parent="CostDisplay"]
+position = Vector2(-1.90735e-06, 5.72205e-06)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("2_gvdyr")
+
+[node name="CostLabel" type="Label" parent="CostDisplay"]
+offset_left = -8.0
+offset_top = -22.0
+offset_right = 43.0
+offset_bottom = 28.0
+theme_override_fonts/font = ExtResource("3_r0xo3")
+theme_override_font_sizes/font_size = 40
+text = "2
+"
+metadata/_edit_use_anchors_ = true
+
+[node name="CardName" type="Node2D" parent="."]
+
+[node name="NameLabel" type="Label" parent="CardName"]
+offset_left = -128.0
+offset_top = -190.0
+offset_right = 132.0
+offset_bottom = -153.0
+theme_override_fonts/font = ExtResource("3_r0xo3")
+theme_override_font_sizes/font_size = 30
+text = "Claymore"
+horizontal_alignment = 1
+vertical_alignment = 2
+autowrap_mode = 3
+
+[node name="PlayDescription" type="Label" parent="."]
+offset_left = -102.0
+offset_top = 51.0
+offset_right = 106.0
+offset_bottom = 120.0
+theme_override_fonts/font = ExtResource("3_r0xo3")
+theme_override_font_sizes/font_size = 22
+text = "Deal 3 damage to a single
+target."
+metadata/_edit_use_anchors_ = true
+
+[node name="ThrowDescription" type="Label" parent="."]
+offset_left = -105.0
+offset_top = 134.0
+offset_right = 110.0
+offset_bottom = 191.0
+theme_override_font_sizes/font_size = 22
+text = "Weaken a single target's 
+attack by 3."
+metadata/_edit_use_anchors_ = true
+
+[node name="CardImage" type="Node2D" parent="."]
+
+[node name="CardImageSprite" type="Sprite2D" parent="CardImage"]
+position = Vector2(6, -41)
+scale = Vector2(1.45, 1.65)
+texture = ExtResource("4_0crru")

@@ -1,5 +1,9 @@
-[gd_scene format=3 uid="uid://bnj8i1ngctqf2"]
+[gd_scene load_steps=2 format=3 uid="uid://bnj8i1ngctqf2"]
+
+[ext_resource type="PackedScene" uid="uid://sho53lxaepy6" path="res://scenes/Card.tscn" id="1_vg0wj"]
 
 [node name="DeckHand" type="Node2D"]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Card" parent="CanvasLayer" instance=ExtResource("1_vg0wj")]
