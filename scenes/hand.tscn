@@ -4,17 +4,19 @@
 [ext_resource type="PackedScene" uid="uid://cy3ekvhyb2xuh" path="res://scenes/cards/claymore.tscn" id="2_02huh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8jjgy"]
-radius = 1000.0
+radius = 1280.0
 
 [node name="Hand" type="Node2D"]
 script = ExtResource("1_pqryc")
-hand_radius = 1000
+hand_radius = 1280
 card_angle = -43.0
+angle_limit = 25.0
+max_card_spread_angle = 5.0
 
 [node name="DebugShape" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_8jjgy")
 
 [node name="test_card" parent="." instance=ExtResource("2_02huh")]
 visible = false
-position = Vector2(731.354, -681.998)
+position = Vector2(936, -872)
 rotation = 0.820305

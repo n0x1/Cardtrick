@@ -7,10 +7,14 @@ class_name Card extends Node2D
 @export var CardCost: int = 1
 @export var CardImage: Sprite2D
 
+@export var Thrown: bool = false # implement this later vv, ThrowDescription only shows when true
+
 @onready var CostLabel: Label = $CostDisplay/CostLabel
 @onready var NameLabel: Label = $CardName/NameLabel 
 @onready var PlayDescLabel: Label = $PlayDescription
 @onready var ThrowDescLabel: Label = $ThrowDescription
+
+# throw description only shows after thrown
 
 func _ready():
 	set_card_values(CardCost, CardName, PlayDescription, ThrowDescription)
@@ -47,3 +51,14 @@ func _process(delta):
 	_update_graphics()
  
 
+
+
+func _on_area_2d_mouse_entered():
+	pass # Replace with function body.
+
+func _on_area_2d_mouse_exited():
+	pass # Replace with function body.
+
+
+func _on_area_2d_input_event(viewport, event, shape_idx):
+	pass # Replace with function body.

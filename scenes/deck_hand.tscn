@@ -1,14 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://bnj8i1ngctqf2"]
+[gd_scene load_steps=3 format=3 uid="uid://bnj8i1ngctqf2"]
 
 [ext_resource type="Script" path="res://scripts/deck_hand.gd" id="1_2mqh6"]
+[ext_resource type="PackedScene" uid="uid://bnjvy5dftqqlh" path="res://scenes/hand.tscn" id="2_sxecu"]
 
 [node name="DeckHand" type="Node2D"]
 script = ExtResource("1_2mqh6")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Spawn" type="Node2D" parent="CanvasLayer"]
-position = Vector2(675, 331)
+[node name="Hand" parent="CanvasLayer" instance=ExtResource("2_sxecu")]
+position = Vector2(1339, 2635)
 
 [node name="Button" type="Button" parent="."]
 offset_left = 474.0
