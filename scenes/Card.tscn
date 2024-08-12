@@ -31,8 +31,7 @@ offset_right = 43.0
 offset_bottom = 28.0
 theme_override_fonts/font = ExtResource("3_r0xo3")
 theme_override_font_sizes/font_size = 40
-text = "2
-"
+text = "3"
 metadata/_edit_use_anchors_ = true
 
 [node name="CardName" type="Node2D" parent="."]
@@ -44,7 +43,7 @@ offset_right = 132.0
 offset_bottom = -153.0
 theme_override_fonts/font = ExtResource("3_r0xo3")
 theme_override_font_sizes/font_size = 30
-text = "Claymore"
+text = "I am a new card name!"
 horizontal_alignment = 1
 vertical_alignment = 2
 autowrap_mode = 1
@@ -56,7 +55,7 @@ offset_right = 106.0
 offset_bottom = 120.0
 theme_override_fonts/font = ExtResource("3_r0xo3")
 theme_override_font_sizes/font_size = 22
-text = "Deal 3 DMG to a target. If target shieled, +12 DMG."
+text = "Newdesc"
 autowrap_mode = 2
 
 [node name="ThrowDescription" type="Label" parent="."]
@@ -65,7 +64,7 @@ offset_top = 134.0
 offset_right = 110.0
 offset_bottom = 191.0
 theme_override_font_sizes/font_size = 22
-text = "Weaken single target's attack by 3 DMG"
+text = "newdesc"
 autowrap_mode = 2
 
 [node name="CardImage" type="Node2D" parent="."]

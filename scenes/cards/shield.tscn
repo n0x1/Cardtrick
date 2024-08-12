@@ -6,12 +6,13 @@
 [node name="Shield" type="Node2D"]
 
 [node name="Card" parent="." instance=ExtResource("1_s8gng")]
+position = Vector2(4.74976, 63)
 CardName = "Shield"
-PlayDescription = "Gain 5 shield"
+PlayDescription = "Gain 6 shield"
 ThrowDescription = "Deal 3 DMG to a target. If target shieled, +12 DMG"
 CardCost = 2
 
 [node name="CardImage" type="Sprite2D" parent="."]
-position = Vector2(173, 188)
+position = Vector2(3.74976, -2)
 scale = Vector2(2.02734, 2.65625)
 texture = ExtResource("2_i111m")
