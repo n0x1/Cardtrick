@@ -6,25 +6,25 @@ class_name Hand extends Node2D
 @export var angle_limit: float = 75 #25
 @export var max_card_spread_angle: float = 180 # 5
 
- 
 @onready var test_card = $test_card #test
 @onready var collision_shape: CollisionShape2D = $DebugShape
 
 var hand: Array = []
-
+var highlight_index: int = -1
 
 func add_card(card: Node2D):
 	hand.push_back(card)
 	add_child(card)
+	card.mouse_entered.connect(_handle_card_touched)
+	card.mouse_exited.connect(_handle_card_untouched)
 	reposition_cards()
-	print(hand)
 
 func remove_card(index: int):
 	var removing_card = hand[index]
 	hand.remove_at(index)
 	remove_child(removing_card)
 	reposition_cards()
-	return removing_card
+	return removing_card # removed from data but returned
 
 
 
@@ -49,6 +49,20 @@ func _update_card_transform(card: Node2D, angle_in_drag: float):
 	card.set_rotation(deg_to_rad(angle_in_drag+90))
 	
 
+func _handle_card_touched(card: Card):
+	var card_index = hand.find(card)
+	if highlight_index < card_index:
+		highlight_index = card_index
+	print("touched: " + card.CardName)
+	
+func _handle_card_untouched(card: Card):
+	var card_index = hand.find(card)
+	if highlight_index == card_index:
+		hand[highlight_index].unhighlight()
+		highlight_index = -1
+	print("untouched: " + card.CardName)
+
+	
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -56,6 +70,9 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if highlight_index >= 0 && highlight_index < hand.size():
+		hand[highlight_index].highlight()
+	
 	collision_shape = $DebugShape
 	# tool logic
 	if (collision_shape.shape as CircleShape2D).radius != hand_radius:

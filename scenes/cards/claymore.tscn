@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://cy3ekvhyb2xuh"]
+[gd_scene load_steps=4 format=3 uid="uid://cy3ekvhyb2xuh"]
 
+[ext_resource type="Script" path="res://scripts/cards/ClaymoreCard.gd" id="1_56d3o"]
 [ext_resource type="PackedScene" uid="uid://sho53lxaepy6" path="res://scenes/Card.tscn" id="1_nk760"]
 [ext_resource type="Texture2D" uid="uid://cwyvnqrsqg1a" path="res://sprites/CardImages/Sword.png" id="2_nfp3l"]
 
 [node name="Claymore" type="Node2D"]
+script = ExtResource("1_56d3o")
 
 [node name="Card" parent="." node_paths=PackedStringArray("CardImage") instance=ExtResource("1_nk760")]
 position = Vector2(3.7501, -204.562)
@@ -12,9 +14,12 @@ PlayDescription = "Deal 3 DMG to a target"
 ThrowDescription = "Deal 1 DMG & weaken target's attack by 2 DMG"
 CardCost = 1
 CardImage = NodePath("../CardImage")
-Thrown = null
+Thrown = false
 
 [node name="CardImage" type="Sprite2D" parent="."]
 position = Vector2(14.75, -244.562)
 scale = Vector2(1.5275, 1.98875)
 texture = ExtResource("2_nfp3l")
+
+[connection signal="mouse_entered" from="Card" to="." method="_on_card_mouse_entered"]
+[connection signal="mouse_exited" from="Card" to="." method="_on_card_mouse_exited"]

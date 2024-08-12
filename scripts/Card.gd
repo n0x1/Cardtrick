@@ -1,6 +1,7 @@
 @tool
 class_name Card extends Node2D
-
+signal mouse_entered(card: Card)
+signal mouse_exited(card: Card)
 @export var CardName: String = "CardName"
 @export var PlayDescription: String = "PlayDesc"
 @export var ThrowDescription: String = "ThrowDesc"
@@ -13,6 +14,7 @@ class_name Card extends Node2D
 @onready var NameLabel: Label = $CardName/NameLabel 
 @onready var PlayDescLabel: Label = $PlayDescription
 @onready var ThrowDescLabel: Label = $ThrowDescription
+@onready var BaseSprite: Sprite2D = $BaseCard
 
 # throw description only shows after thrown
 
@@ -43,7 +45,14 @@ func _update_graphics():
 
 # deck: fan cards in arc of a circle, change angle of others when a card is hovered.
 # hovered card grows and then use sin and cos to get position of other cards
+func activate():
+	pass
+	
+func highlight():
+	BaseSprite.set_modulate(Color(1,0,0.7,1))
 
+func unhighlight():
+	BaseSprite.set_modulate(Color(1,1,1,1))
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -51,13 +60,13 @@ func _process(delta):
 	_update_graphics()
  
 
-
+ 
 
 func _on_area_2d_mouse_entered():
-	pass # Replace with function body.
+	mouse_entered.emit(self)
 
 func _on_area_2d_mouse_exited():
-	pass # Replace with function body.
+	mouse_exited.emit(self)
 
 
 func _on_area_2d_input_event(viewport, event, shape_idx):

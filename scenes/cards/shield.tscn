@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://dtoi8o7yixuaq"]
+[gd_scene load_steps=4 format=3 uid="uid://dtoi8o7yixuaq"]
 
+[ext_resource type="Script" path="res://scripts/cards/ShieldCard.gd" id="1_8jtxr"]
 [ext_resource type="PackedScene" uid="uid://sho53lxaepy6" path="res://scenes/Card.tscn" id="1_s8gng"]
 [ext_resource type="Texture2D" uid="uid://dy1mq80or30j" path="res://sprites/CardImages/shield.png" id="2_i111m"]
 
 [node name="Shield" type="Node2D"]
+script = ExtResource("1_8jtxr")
 
 [node name="Card" parent="." instance=ExtResource("1_s8gng")]
 position = Vector2(5.74975, -209)
@@ -11,9 +13,12 @@ CardName = "Shield"
 PlayDescription = "Gain 6 shield"
 ThrowDescription = "Deal 3 DMG to a target. If target shieled, +12 DMG"
 CardCost = 2
-Thrown = null
+Thrown = false
 
 [node name="CardImage" type="Sprite2D" parent="."]
 position = Vector2(4.74975, -274)
 scale = Vector2(2.02734, 2.65625)
 texture = ExtResource("2_i111m")
+
+[connection signal="mouse_entered" from="Card" to="." method="_on_card_mouse_entered"]
+[connection signal="mouse_exited" from="Card" to="." method="_on_card_mouse_exited"]
