@@ -12,8 +12,13 @@ extends Node2D
 
 var hand: Array = []
 var touched: Array = []
-var highlight_index: int = -1 # THIS works when its init 0?? but it wont change I HATE THIS
+var current_seleted_card_index: int = -1
 
+var initial_scale = Vector2(1, 1) 
+var target_scale = Vector2(1.2, 1.2) 
+var scale_speed = 17.65 
+var raised_z_index = 99  
+		
 func add_card(card: Node2D):
 	hand.push_back(card)
 	add_child(card)
@@ -24,7 +29,9 @@ func add_card(card: Node2D):
 func remove_card(index: int) -> Node2D:
 	var removing_card = hand[index]
 	hand.remove_at(index)
+	touched.remove_at(touched.find(removing_card))
 	remove_child(removing_card)
+	
 	reposition_cards()
 	return removing_card # removed from data but returned
 
@@ -53,37 +60,29 @@ func _update_card_transform(card: Node2D, angle_in_drag: float):
 
 func _handle_card_touched(card):
 	touched.push_back(card)
-	var card_index = hand.find(card)
-	print("CARDINDEX: " + str(card_index))
-	print("highlight index: " + str(highlight_index))
-	if highlight_index < card_index:
-		if highlight_index >= 0:
-			hand[highlight_index].unhighlight()
-		highlight_index = card_index
-	
-	
 
-
-	
 func _handle_card_untouched(card):
 	touched.remove_at(touched.find(card))
-	var card_index = hand.find(card)
-	if highlight_index == card_index:
-		hand[highlight_index].unhighlight()
-		highlight_index = -1
-		print(card_index)
-
 
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
 
+func _input(event):
+	if event.is_action_pressed("mouse_click") and current_seleted_card_index >= 0:
+		var card = remove_card(current_seleted_card_index)
+		# card.queue_free() # remove from memory after scaling scale
+		current_seleted_card_index = -1
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	for card in hand:
+		current_seleted_card_index = -1
 		card.unhighlight()
+		card.scale = scale.lerp(initial_scale, scale_speed * delta)
+		card.z_index = 0 # DEFAULTZINDEX can change
+
 	
 	if !touched.is_empty():
 		
@@ -92,8 +91,12 @@ func _process(delta):
 		for touched_card in touched:
 			highest_touched_index = max(highest_touched_index, hand.find(touched_card))
 			
-		if highest_touched_index >= 0 && highest_touched_index < hand.size():
-			hand[highest_touched_index].highlight()
+		if highest_touched_index >= 0 and highest_touched_index < hand.size():
+			var hhti = hand[highest_touched_index]
+			hhti.highlight()
+			hhti.scale = scale.lerp(target_scale, scale_speed * delta)
+			hhti.z_index = raised_z_index
+			current_seleted_card_index = highest_touched_index
 	
 	
 	collision_shape = $DebugShape

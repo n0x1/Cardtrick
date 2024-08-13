@@ -15,7 +15,6 @@ CardName = "I am a new card name!"
 PlayDescription = "Newdesc"
 ThrowDescription = "newdesc"
 CardCost = 3
-Thrown = null
 
 [node name="BaseCard" type="Sprite2D" parent="."]
 texture = ExtResource("1_vt7m0")
@@ -64,6 +63,7 @@ text = "Newdesc"
 autowrap_mode = 2
 
 [node name="ThrowDescription" type="Label" parent="."]
+visible = false
 offset_left = -105.0
 offset_top = 134.0
 offset_right = 110.0

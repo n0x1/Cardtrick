@@ -2,7 +2,9 @@ extends Node2D
 signal mouse_entered(card: Card)
 signal mouse_exited(card: Card)
 
+
 @export var Thrown: bool = false # implement this later vv, ThrowDescription only shows when true
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -15,6 +17,12 @@ func _process(delta):
 
 
 
+func highlight():
+	$Card.highlight()
+	
+func unhighlight():
+	$Card.unhighlight()
+
 
 func _on_card_mouse_entered(card: Card):
 	mouse_entered.emit(self)
@@ -22,11 +30,3 @@ func _on_card_mouse_entered(card: Card):
 
 func _on_card_mouse_exited(card: Card):
 	mouse_exited.emit(self)
-
-
-func highlight():
-	$Card.highlight()
-	print("attemped highlight")
-	
-func unhighlight():
-	$Card.unhighlight()

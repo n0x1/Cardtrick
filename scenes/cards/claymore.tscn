@@ -14,7 +14,6 @@ PlayDescription = "Deal 3 DMG to a target"
 ThrowDescription = "Deal 1 DMG & weaken target's attack by 2 DMG"
 CardCost = 1
 CardImage = NodePath("../CardImage")
-Thrown = false
 
 [node name="CardImage" type="Sprite2D" parent="."]
 position = Vector2(14.75, -244.562)

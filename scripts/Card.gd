@@ -3,6 +3,7 @@ class_name Card
 extends Node2D
 signal mouse_entered(card: Card)
 signal mouse_exited(card: Card)
+
 @export var CardName: String = "CardName"
 @export var PlayDescription: String = "PlayDesc"
 @export var ThrowDescription: String = "ThrowDesc"
@@ -17,7 +18,7 @@ signal mouse_exited(card: Card)
 @onready var ThrowDescLabel: Label = $ThrowDescription
 @onready var BaseSprite: Sprite2D = $BaseCard
 
-# throw description only shows after thrown
+var thrown_cards_descs: Array = [] #populate wiht thrown ones
 
 func _ready():
 	set_card_values(CardCost, CardName, PlayDescription, ThrowDescription)
@@ -44,6 +45,7 @@ func _update_graphics():
 		ThrowDescLabel.set_text(ThrowDescription)
 
 
+
 # deck: fan cards in arc of a circle, change angle of others when a card is hovered.
 # hovered card grows and then use sin and cos to get position of other cards
 func activate():
@@ -68,4 +70,7 @@ func _on_area_2d_mouse_exited():
 
 
 func _on_area_2d_input_event(viewport, event, shape_idx):
-	pass # Replace with function body.
+	if event.is_action_pressed("mouse_click"):
+	
+		thrown_cards_descs.push_back(ThrowDescription) # proib nt the best way so change
+	

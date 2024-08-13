@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://cg841d3cpmpjd"]
+
+[ext_resource type="PackedScene" uid="uid://bnj8i1ngctqf2" path="res://scenes/deck_n_hand.tscn" id="1_vfrus"]
+
+[node name="Main" type="Node2D"]
+
+[node name="DeckHand" parent="." instance=ExtResource("1_vfrus")]
+
+[node name="GameScreen" type="Node2D" parent="."]
+
+[node name="PlayerCharacter" type="Node2D" parent="GameScreen"]
+
+[node name="EnemyCharacter" type="Node2D" parent="GameScreen"]
