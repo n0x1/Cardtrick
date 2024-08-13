@@ -1,5 +1,6 @@
 @tool
-class_name Hand extends Node2D
+class_name Hand 
+extends Node2D
 
 @export var hand_radius: int = 1
 @export var card_angle: float = -90
@@ -10,7 +11,8 @@ class_name Hand extends Node2D
 @onready var collision_shape: CollisionShape2D = $DebugShape
 
 var hand: Array = []
-var highlight_index: int = -1
+var touched: Array = []
+var highlight_index: int = -1 # THIS works when its init 0?? but it wont change I HATE THIS
 
 func add_card(card: Node2D):
 	hand.push_back(card)
@@ -19,7 +21,7 @@ func add_card(card: Node2D):
 	card.mouse_exited.connect(_handle_card_untouched)
 	reposition_cards()
 
-func remove_card(index: int):
+func remove_card(index: int) -> Node2D:
 	var removing_card = hand[index]
 	hand.remove_at(index)
 	remove_child(removing_card)
@@ -49,18 +51,28 @@ func _update_card_transform(card: Node2D, angle_in_drag: float):
 	card.set_rotation(deg_to_rad(angle_in_drag+90))
 	
 
-func _handle_card_touched(card: Card):
+func _handle_card_touched(card):
+	touched.push_back(card)
 	var card_index = hand.find(card)
+	print("CARDINDEX: " + str(card_index))
+	print("highlight index: " + str(highlight_index))
 	if highlight_index < card_index:
+		if highlight_index >= 0:
+			hand[highlight_index].unhighlight()
 		highlight_index = card_index
-	print("touched: " + card.CardName)
 	
-func _handle_card_untouched(card: Card):
+	
+
+
+	
+func _handle_card_untouched(card):
+	touched.remove_at(touched.find(card))
 	var card_index = hand.find(card)
 	if highlight_index == card_index:
 		hand[highlight_index].unhighlight()
 		highlight_index = -1
-	print("untouched: " + card.CardName)
+		print(card_index)
+
 
 	
 # Called when the node enters the scene tree for the first time.
@@ -70,8 +82,19 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if highlight_index >= 0 && highlight_index < hand.size():
-		hand[highlight_index].highlight()
+	for card in hand:
+		card.unhighlight()
+	
+	if !touched.is_empty():
+		
+		var highest_touched_index = -1
+		
+		for touched_card in touched:
+			highest_touched_index = max(highest_touched_index, hand.find(touched_card))
+			
+		if highest_touched_index >= 0 && highest_touched_index < hand.size():
+			hand[highest_touched_index].highlight()
+	
 	
 	collision_shape = $DebugShape
 	# tool logic
