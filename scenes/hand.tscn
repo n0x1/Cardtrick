@@ -20,3 +20,14 @@ shape = SubResource("CircleShape2D_8jjgy")
 visible = false
 position = Vector2(936, -872)
 rotation = 0.820305
+
+[node name="StagedLabel" type="Label" parent="."]
+visible = false
+offset_left = 150.0
+offset_top = -1951.0
+offset_right = 266.0
+offset_bottom = -1798.0
+theme_override_font_sizes/font_size = 40
+text = "J: play
+K: throw
+L: rip"

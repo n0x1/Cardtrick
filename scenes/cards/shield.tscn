@@ -13,7 +13,6 @@ CardName = "Shield"
 PlayDescription = "Gain 6 shield"
 ThrowDescription = "Deal 3 DMG to a target. If target shieled, +12 DMG"
 CardCost = 2
-Thrown = false
 
 [node name="CardImage" type="Sprite2D" parent="."]
 position = Vector2(4.74975, -274)

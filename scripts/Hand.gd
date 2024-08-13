@@ -1,6 +1,6 @@
 @tool
 class_name Hand 
-extends Node2D
+extends Node2D 
 
 @export var hand_radius: int = 1
 @export var card_angle: float = -90
@@ -13,12 +13,14 @@ extends Node2D
 var hand: Array = []
 var touched: Array = []
 var current_seleted_card_index: int = -1
+var card_staged = false
+var staged_index: int = -1
 
 var initial_scale = Vector2(1, 1) 
 var target_scale = Vector2(1.2, 1.2) 
 var scale_speed = 17.65 
 var raised_z_index = 99  
-		
+
 func add_card(card: Node2D):
 	hand.push_back(card)
 	add_child(card)
@@ -33,13 +35,29 @@ func remove_card(index: int) -> Node2D:
 	remove_child(removing_card)
 	
 	reposition_cards()
+
 	return removing_card # removed from data but returned
 
-
+func stage_card(index):
+	var card = hand[index]
+	staged_index = index
+	card.position.y -= 500
+	card.position.x = 0
+	card.set_rotation((0))
+	card_staged = true
+	$StagedLabel.visible = true
+	
+func unstage_cards():
+	$StagedLabel.visible = false
+	reposition_cards()
+	card_staged = false
+	staged_index = -1
+	
 
 func reposition_cards():
 	var card_spread = min(angle_limit / hand.size(), max_card_spread_angle)
 	var current_angle = -(card_spread * (hand.size() - 1))/2 - 90
+	card_staged = false
 	for card in hand :
 		_update_card_transform(card, current_angle)
 		current_angle += card_spread
@@ -67,11 +85,15 @@ func _handle_card_untouched(card):
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	$StagedLabel.visible = false
 
 func _input(event):
 	if event.is_action_pressed("mouse_click") and current_seleted_card_index >= 0:
-		var card = remove_card(current_seleted_card_index)
+		# var card = remove_card(current_seleted_card_index)
+		if card_staged == false:
+			stage_card(current_seleted_card_index)
+		else: 
+			unstage_cards()
 		# card.queue_free() # remove from memory after scaling scale
 		current_seleted_card_index = -1
 
@@ -82,6 +104,8 @@ func _process(delta):
 		card.unhighlight()
 		card.scale = scale.lerp(initial_scale, scale_speed * delta)
 		card.z_index = 0 # DEFAULTZINDEX can change
+	if card_staged == true:
+		hand[staged_index].staged_highlight()
 
 	
 	if !touched.is_empty():

@@ -63,7 +63,6 @@ text = "Newdesc"
 autowrap_mode = 2
 
 [node name="ThrowDescription" type="Label" parent="."]
-visible = false
 offset_left = -105.0
 offset_top = 134.0
 offset_right = 110.0
