@@ -24,7 +24,7 @@ func unhighlight():
 	$Card.unhighlight()
 	
 func staged_highlight():
-	$Card.staged_highlight()
+	$Card.staged_highlight($CardImage)
 
 
 func _on_card_mouse_entered(card: Card):

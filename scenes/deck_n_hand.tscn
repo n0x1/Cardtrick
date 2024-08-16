@@ -9,7 +9,7 @@ script = ExtResource("1_tjav7")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Hand" parent="CanvasLayer" instance=ExtResource("2_2du0w")]
-position = Vector2(1339, 2635)
+position = Vector2(1339, 2805)
 
 [node name="Button" type="Button" parent="."]
 offset_left = 474.0

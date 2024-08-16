@@ -13,6 +13,7 @@ extends Node2D
 var hand: Array = []
 var touched: Array = []
 var current_seleted_card_index: int = -1
+
 var card_staged = false
 var staged_index: int = -1
 
@@ -27,6 +28,7 @@ func add_card(card: Node2D):
 	card.mouse_entered.connect(_handle_card_touched)
 	card.mouse_exited.connect(_handle_card_untouched)
 	reposition_cards()
+	$StagedLabel.visible = false
 
 func remove_card(index: int) -> Node2D:
 	var removing_card = hand[index]
@@ -92,8 +94,12 @@ func _input(event):
 		# var card = remove_card(current_seleted_card_index)
 		if card_staged == false:
 			stage_card(current_seleted_card_index)
+		elif current_seleted_card_index == staged_index:
+			unstage_cards()
 		else: 
 			unstage_cards()
+			stage_card(current_seleted_card_index)
+			
 		# card.queue_free() # remove from memory after scaling scale
 		current_seleted_card_index = -1
 

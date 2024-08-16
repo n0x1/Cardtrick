@@ -12,8 +12,10 @@ signal mouse_exited(card: Card)
 
 var card_staged = false
 var sgshiftred: float = 0.8
+@onready var stored_image = $CardImage/CardImageSprite
 var dir = "down"
-var shift_interval = 0.0125
+var shift_interval := 0.0125 # this is for color
+var movement_translate_interval := 0.2 # y shift
 
 
 
@@ -54,12 +56,19 @@ func _update_graphics():
 		BaseSprite.set_modulate(Color(sgshiftred,0.65,0.75,1))
 		if dir == "down":
 			sgshiftred -= shift_interval
+			$".".translate(Vector2(0,movement_translate_interval))
+			stored_image.translate(Vector2(0,movement_translate_interval))
 		else:
 			sgshiftred += shift_interval
+			$".".translate(Vector2(0,-1 * movement_translate_interval)) # shift up and down 
+			stored_image.translate(Vector2(0,-1 * movement_translate_interval))
+				
 		if sgshiftred <= 0.2:
 			dir = "up"
 		if sgshiftred >= 0.8:
 			dir = "down"
+	else:
+		$".".translate(Vector2(0,0)) #put back to default
 
 
 
@@ -75,9 +84,10 @@ func unhighlight():
 	BaseSprite.set_modulate(Color(1,1,1,1))
 	card_staged = false
 	
-func staged_highlight():
+func staged_highlight(img):
 	highlight()
 	card_staged = true
+	stored_image = img
 
 
 
