@@ -6,9 +6,7 @@
 [node name="DeckHand" type="Node2D"]
 script = ExtResource("1_tjav7")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Hand" parent="CanvasLayer" instance=ExtResource("2_2du0w")]
+[node name="Hand" parent="." instance=ExtResource("2_2du0w")]
 position = Vector2(1339, 2805)
 
 [node name="Button" type="Button" parent="."]
@@ -25,5 +23,6 @@ offset_right = 670.0
 offset_bottom = 168.0
 text = "add shield"
 
+[connection signal="card_activated" from="Hand" to="." method="_on_hand_card_activated"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]

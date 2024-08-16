@@ -2,8 +2,8 @@ class_name UsableCard extends Node2D
 signal mouse_entered(card: Card)
 signal mouse_exited(card: Card)
 
-
-@export var Thrown: bool = false # implement this later vv, ThrowDescription only shows when true
+@export var action: Node2D
+@export var thrown: bool = false # implement this later vv, ThrowDescription only shows when true
 
 
 # Called when the node enters the scene tree for the first time.
@@ -15,6 +15,9 @@ func _ready():
 func _process(delta):
 	pass
 
+func activate(game_objects):
+	action.activate()
+	pass
 
 
 func highlight():

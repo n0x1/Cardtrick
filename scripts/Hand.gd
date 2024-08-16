@@ -1,7 +1,7 @@
 @tool
 class_name Hand extends Node2D 
 
-signal card_activated(card: UsableCard, action)
+signal card_activated(card: UsableCard, action: String)
 
 @export var hand_radius: int = 1
 @export var card_angle: float = -90
@@ -16,7 +16,7 @@ var touched: Array = []
 var current_seleted_card_index: int = -1
 
 var card_staged = false
-var staged_index: int = -1
+var staged_index: int = -1 # USE THis to get it, the staged card stays in hand[]
 
 var initial_scale = Vector2(1, 1) 
 var target_scale = Vector2(1.2, 1.2) 
@@ -33,12 +33,13 @@ func add_card(card: Node2D):
 
 func remove_card(index: int) -> Node2D:
 	var removing_card = hand[index]
+	
 	hand.remove_at(index)
-	touched.remove_at(touched.find(removing_card))
+	if touched.size() > 0:
+		touched.remove_at(touched.find(removing_card))
 	remove_child(removing_card)
 	
 	reposition_cards()
-
 	return removing_card # removed from data but returned
 
 func stage_card(index):
@@ -100,6 +101,25 @@ func _input(event):
 		else: 
 			unstage_cards()
 			stage_card(current_seleted_card_index)
+	if card_staged == true and staged_index >= 0: # handle playing of the card
+		if event.is_action_pressed("keypress_j"): #play J
+			var card = remove_card(staged_index)
+			var action = "play"
+			card_activated.emit(card, action)
+			
+			print("played " + card.name)
+		if event.is_action_pressed("keypress_k"): #throw K
+			var card = remove_card(staged_index)
+			var action = "throw"
+			card_activated.emit(card, action)
+			
+			print("threw " + card.name)
+		if event.is_action_pressed("keypress_l"): #rip L
+			var card = remove_card(staged_index)
+			var action = "rip"
+			card_activated.emit(card, action)
+			
+			print("ripped " + card.name)
 			
 		# card.queue_free() # remove from memory after scaling scale
 		current_seleted_card_index = -1
