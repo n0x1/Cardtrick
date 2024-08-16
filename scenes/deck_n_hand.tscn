@@ -16,14 +16,14 @@ offset_left = 474.0
 offset_top = 143.0
 offset_right = 553.0
 offset_bottom = 171.0
-text = "Create card 1"
+text = "add claymore"
 
 [node name="Button2" type="Button" parent="."]
 offset_left = 589.0
 offset_top = 140.0
 offset_right = 670.0
 offset_bottom = 168.0
-text = "Create card 2"
+text = "add shield"
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]

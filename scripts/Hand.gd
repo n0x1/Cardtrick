@@ -1,6 +1,7 @@
 @tool
-class_name Hand 
-extends Node2D 
+class_name Hand extends Node2D 
+
+signal card_activated(card: UsableCard, action)
 
 @export var hand_radius: int = 1
 @export var card_angle: float = -90

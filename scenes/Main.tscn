@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://cg841d3cpmpjd"]
+[gd_scene load_steps=5 format=3 uid="uid://cg841d3cpmpjd"]
 
 [ext_resource type="PackedScene" uid="uid://bnj8i1ngctqf2" path="res://scenes/deck_n_hand.tscn" id="1_vfrus"]
+[ext_resource type="Script" path="res://scripts/Character.gd" id="2_4j42c"]
+[ext_resource type="Texture2D" uid="uid://cprhgxh2562ej" path="res://sprites/player.png" id="2_i104c"]
+[ext_resource type="Texture2D" uid="uid://ct103svanepry" path="res://sprites/Enemies/Mushroom.png" id="3_38wu3"]
 
 [node name="Main" type="Node2D"]
 
@@ -9,5 +12,38 @@
 [node name="GameScreen" type="Node2D" parent="."]
 
 [node name="PlayerCharacter" type="Node2D" parent="GameScreen"]
+position = Vector2(693, 725)
+script = ExtResource("2_4j42c")
+
+[node name="PlayerSprite" type="Sprite2D" parent="GameScreen/PlayerCharacter"]
+position = Vector2(181, 176)
+scale = Vector2(4.2, 4.2)
+texture = ExtResource("2_i104c")
+
+[node name="Healthbar" type="ProgressBar" parent="GameScreen/PlayerCharacter"]
+offset_left = 73.0
+offset_top = -290.0
+offset_right = 294.0
+offset_bottom = -266.0
+max_value = 10.0
+value = 10.0
+show_percentage = false
 
 [node name="EnemyCharacter" type="Node2D" parent="GameScreen"]
+position = Vector2(1737, 641)
+script = ExtResource("2_4j42c")
+health = 6
+
+[node name="EnemyMush" type="Sprite2D" parent="GameScreen/EnemyCharacter"]
+position = Vector2(124, 39)
+scale = Vector2(2.7, 2.7)
+texture = ExtResource("3_38wu3")
+
+[node name="Healthbar" type="ProgressBar" parent="GameScreen/EnemyCharacter"]
+offset_left = 42.0
+offset_top = -168.0
+offset_right = 212.0
+offset_bottom = -144.0
+max_value = 10.0
+value = 6.0
+show_percentage = false

@@ -1,4 +1,4 @@
-extends Node2D
+class_name UsableCard extends Node2D
 
 signal mouse_entered(card: Card)
 signal mouse_exited(card: Card)

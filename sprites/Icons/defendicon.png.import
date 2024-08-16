@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cprhgxh2562ej"
-path="res://.godot/imported/player.png-f534b8a02ffb80eefc72936296201445.ctex"
+uid="uid://td5peavms807"
+path="res://.godot/imported/defendicon.png-0ce92f2427aed46b0712670922543b42.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/player.png"
-dest_files=["res://.godot/imported/player.png-f534b8a02ffb80eefc72936296201445.ctex"]
+source_file="res://sprites/Icons/defendicon.png"
+dest_files=["res://.godot/imported/defendicon.png-0ce92f2427aed46b0712670922543b42.ctex"]
 
 [params]
 
