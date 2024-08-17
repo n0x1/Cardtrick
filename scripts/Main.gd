@@ -11,6 +11,10 @@ func _process(delta):
 	pass
 
 
-func _on_deck_hand_card_activated(card, action):
-	card.activate(action)
-	pass # Replace with function body.
+func _on_deck_hand_card_activated(card: UsableCard, action: String):
+	card.activate({
+		"caster": $GameScreen/PlayerCharacter,
+		"targets": [$GameScreen/EnemyCharacter],
+		"card": card,
+		"action": action
+	})

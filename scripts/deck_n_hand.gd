@@ -23,9 +23,9 @@ func _on_button_pressed():
 
 func _on_button_2_pressed():
 	var shield_card = shield_card_scene.instantiate()
-	hand.add_card(shield_card)	
+	hand.add_card(shield_card)
 
 
-func _on_hand_card_activated(card, action):
+func _on_hand_card_activated(card, action): # bring up to Main node
 	card_activated.emit(card, action)
 	pass # Replace with function body.

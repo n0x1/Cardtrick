@@ -15,9 +15,8 @@ func _ready():
 func _process(delta):
 	pass
 
-func activate(game_objects):
-	action.activate()
-	pass
+func activate(game_state: Dictionary):
+	action.activate(game_state)
 
 
 func highlight():
@@ -30,9 +29,14 @@ func staged_highlight():
 	$Card.staged_highlight($CardImage)
 
 
+
 func _on_card_mouse_entered(card: Card):
 	mouse_entered.emit(self)
 
 
 func _on_card_mouse_exited(card: Card):
 	mouse_exited.emit(self)
+
+
+func get_card_name():
+	return $Card.CardName

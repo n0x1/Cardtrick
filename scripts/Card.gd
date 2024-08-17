@@ -29,6 +29,7 @@ var movement_translate_interval := 0.2 # y shift
 
 var thrown_cards_descs: Array = [] #populate wiht thrown ones
 
+
 func _ready():
 	set_card_values(CardCost, CardName, PlayDescription, ThrowDescription)
 
