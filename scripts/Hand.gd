@@ -11,6 +11,8 @@ signal card_activated(card: UsableCard, action: String)
 @onready var test_card = $test_card #test
 @onready var collision_shape: CollisionShape2D = $DebugShape
 
+@onready var timer = $Timer
+
 var hand: Array = []
 var touched: Array = []
 var current_seleted_card_index: int = -1
@@ -44,6 +46,8 @@ func remove_card(index: int) -> Node2D:
 	return removing_card # removed from data but returned
 
 func stage_card(index):
+	make_NEM_invisible()
+
 	var card = hand[index]
 	staged_index = index
 	card.position.y -= 500
@@ -91,6 +95,7 @@ func _handle_card_untouched(card):
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$StagedLabel.visible = false
+	timer.connect("timeout", Callable(self, "_on_Timer_timeout")) 
 
 func _input(event):
 	if event.is_action_pressed("mouse_click") and current_seleted_card_index >= 0:
@@ -102,34 +107,29 @@ func _input(event):
 		else: 
 			unstage_cards()
 			stage_card(current_seleted_card_index)
-	if card_staged == true and staged_index >= 0 and int($ManaAmount.get_text()) - hand[staged_index].get_card_cost(): # handle playing of the card
+	if card_staged == true and staged_index >= 0: # handle playing of the card
 	#!! remove_card just returns hand[index] passed in
 	
 		if event.is_action_pressed("keypress_j"): #play J
-			var card = remove_card(staged_index)
-			var card_name = card.get_card_name()
-			var action = "play"
-			card_activated.emit(card, action)
-			
-			print("played " + card_name)
+			card_ability("play")
 		if event.is_action_pressed("keypress_k"): #throw K
-			var card = remove_card(staged_index)
-			var card_name = card.get_card_name()
-			var action = "throw"
-			card_activated.emit(card, action)
-			
-			print("threw " + card_name)
+			card_ability("throw")
 		if event.is_action_pressed("keypress_l"): #rip L
-			var card = remove_card(staged_index)
-			var card_name = card.get_card_name()
-			var action = "rip"
-			card_activated.emit(card, action)
+			card_ability("rip")
 			
-			print("ripped " + card_name)
 			
 		# card.queue_free() # remove from memory after scaling scale
 		current_seleted_card_index = -1
 
+func card_ability(action):
+	var card = hand[staged_index]
+	var card_name = card.get_card_name()
+	var card_cost = card.get_card_cost()
+	
+	card_activated.emit(staged_index, card, card_cost, action)
+
+	print("used " + action + " on " + card_name)
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	for card in hand:
@@ -163,3 +163,20 @@ func _process(delta):
 	
 	test_card.set_position(get_card_position(card_angle))
 	test_card.set_rotation(deg_to_rad(card_angle + 90))
+
+
+func show_NEM():
+	var label = $NotEnoughManaLabel
+	label.visible = true
+	
+	timer.start()
+
+
+
+func _on_timer_timeout():
+	make_NEM_invisible()
+	
+func make_NEM_invisible(): # idk if i cando the signal from others os just easier
+	var label = $NotEnoughManaLabel
+	if label.visible == true:
+		label.visible = false

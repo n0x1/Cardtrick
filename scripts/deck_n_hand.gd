@@ -26,5 +26,5 @@ func _on_button_2_pressed():
 	hand.add_card(shield_card)
 
 
-func _on_hand_card_activated(card, action): # bring up to Main node
-	card_activated.emit(card, action)
+func _on_hand_card_activated(staged_index, card, card_cost, action): # bring up to Main node
+	card_activated.emit(staged_index, card, card_cost, action)

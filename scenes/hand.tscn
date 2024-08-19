@@ -31,3 +31,20 @@ theme_override_font_sizes/font_size = 40
 text = "J: play
 K: throw
 L: rip"
+
+[node name="NotEnoughManaLabel" type="Label" parent="."]
+visible = false
+z_index = 999
+offset_left = -251.0
+offset_top = -2000.0
+offset_right = 256.0
+offset_bottom = -1904.0
+theme_override_colors/font_color = Color(0.746585, 1.02978e-06, 1.45358e-07, 1)
+theme_override_font_sizes/font_size = 80
+text = "Not Enough Mana"
+horizontal_alignment = 1
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -42,4 +42,4 @@ func get_card_name():
 	return $Card.CardName
 
 func get_card_cost() -> int:
-	return $Card.CardCost
+	return int($Card.CardCost)
