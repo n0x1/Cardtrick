@@ -7,9 +7,11 @@ class_name Character extends Node2D
 @export var mana: int = 5
 
 func spend_mana(amount: int):
-	#if mana - amount >= 0:
-	mana -= amount
-	#else:
+	if mana - amount >= 0:
+		mana -= amount
+		return true
+	else:
+		return false
 		#display some message or error sound
 
 func take_damage(amount: int):
@@ -41,8 +43,11 @@ func update_healthbar(): # hp bar graphical update only
 		($Healthbar as ProgressBar).max_value = max_health 
 	if ($Healthbar as ProgressBar).value != health:
 		($Healthbar as ProgressBar).value = health
+	($"Healthbar/HealthText").set_text(str(health) + "/" + str(max_health))
 
-
+func update_shield_icon_values():
+	$"Shield".visible = shield > 0 # returns true or false
+	$"Shield/ShieldNum".set_text(str(shield))
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -51,4 +56,5 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	update_healthbar()
+	update_shield_icon_values()
 

@@ -25,7 +25,6 @@ player_character = NodePath("GameScreen/PlayerCharacter")
 [node name="PlayerCharacter" type="Node2D" parent="GameScreen"]
 position = Vector2(693, 725)
 script = ExtResource("2_4j42c")
-health = 50
 
 [node name="PlayerSprite" type="Sprite2D" parent="GameScreen/PlayerCharacter"]
 position = Vector2(181, 176)
@@ -38,22 +37,32 @@ offset_top = -290.0
 offset_right = 294.0
 offset_bottom = -266.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_70d4t")
-value = 50.0
+value = 100.0
 show_percentage = false
 
-[node name="ShieldNum" type="Label" parent="GameScreen/PlayerCharacter"]
-offset_left = 179.0
-offset_top = -337.0
-offset_right = 238.0
-offset_bottom = -288.0
-theme_override_font_sizes/font_size = 40
-text = "1"
-horizontal_alignment = 2
+[node name="HealthText" type="Label" parent="GameScreen/PlayerCharacter/Healthbar"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 3.0
+offset_right = 187.0
+offset_bottom = 23.0
+text = "100/100"
+horizontal_alignment = 1
 
-[node name="ShieldIcon" type="Sprite2D" parent="GameScreen/PlayerCharacter"]
+[node name="Shield" type="Sprite2D" parent="GameScreen/PlayerCharacter"]
+visible = false
 position = Vector2(254, -317)
 scale = Vector2(1.15625, 1.125)
 texture = ExtResource("5_4i1j7")
+
+[node name="ShieldNum" type="Label" parent="GameScreen/PlayerCharacter/Shield"]
+offset_left = -73.5135
+offset_top = -19.5555
+offset_right = -14.5135
+offset_bottom = 29.4445
+theme_override_font_sizes/font_size = 40
+text = "0"
+horizontal_alignment = 2
 
 [node name="EnemyCharacter" type="Node2D" parent="GameScreen"]
 position = Vector2(1737, 641)
@@ -74,6 +83,30 @@ offset_bottom = -144.0
 max_value = 25.0
 value = 25.0
 show_percentage = false
+
+[node name="HealthText" type="Label" parent="GameScreen/EnemyCharacter/Healthbar"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 2.0
+offset_right = 155.0
+offset_bottom = 24.0
+text = "25/25"
+horizontal_alignment = 1
+
+[node name="Shield" type="Sprite2D" parent="GameScreen/EnemyCharacter"]
+visible = false
+position = Vector2(188, -195)
+scale = Vector2(1.15625, 1.125)
+texture = ExtResource("5_4i1j7")
+
+[node name="ShieldNum" type="Label" parent="GameScreen/EnemyCharacter/Shield"]
+offset_left = -73.5135
+offset_top = -19.5555
+offset_right = -14.5135
+offset_bottom = 29.4445
+theme_override_font_sizes/font_size = 40
+text = "0"
+horizontal_alignment = 2
 
 [node name="ManaAmount" type="Label" parent="."]
 offset_left = 109.0

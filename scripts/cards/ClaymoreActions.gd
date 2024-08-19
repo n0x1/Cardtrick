@@ -2,21 +2,28 @@ extends Node2D
 
 func activate(game_state: Dictionary):
 	var caster = game_state.get("caster")
+	var card = game_state.get("card")
 	var targets = game_state.get("targets")
 	var action = game_state.get("action") 
 	#spend mana/cost
-	caster.spend_mana(1) # can also implement function to get cost but const in code is easy
+	if caster.spend_mana(1) == true: # can also implement function to get cost but const in code is easy
 
-	if action == "play":
-		play(targets)
-	elif action == "throw":
-		throw(targets)
-	elif action == "rip": # rip combines both effects
-		play(targets)
-		throw(targets)
-	else:
-		print("INVALID action passed (??)!!!")
-		return(null)
+		if action == "play":
+			play(targets)
+		elif action == "throw":
+			throw(targets)
+		elif action == "rip": # rip combines both effects
+			play(targets)
+			throw(targets)
+		else:
+			print("INVALID action passed (??)!!!")
+			return(null)
+			
+
+		
+		
+		
+		
 		
 
 func play(targets):

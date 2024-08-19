@@ -40,3 +40,6 @@ func _on_card_mouse_exited(card: Card):
 
 func get_card_name():
 	return $Card.CardName
+
+func get_card_cost() -> int:
+	return $Card.CardCost

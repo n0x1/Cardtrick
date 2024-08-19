@@ -6,18 +6,18 @@ func activate(game_state: Dictionary):
 	var targets = game_state.get("targets")
 	var action = game_state.get("action") 
 	
-	caster.spend_mana(2) # can also implement function to get cost but const is easier
+	if caster.spend_mana(2) == true: # can also implement function to get cost but const is easier
 	
-	if action == "play":
-		play(caster)
-	elif action == "throw":
-		throw(caster, targets)
-	elif action == "rip": # rip combines both effects
-		play(caster)
-		throw(caster, targets)
-	else:
-		print("INVALID action passed (??)!!!")
-		return(null)
+		if action == "play":
+			play(caster)
+		elif action == "throw":
+			throw(caster, targets)
+		elif action == "rip": # rip combines both effects
+			play(caster)
+			throw(caster, targets)
+		else:
+			print("INVALID action passed (??)!!!")
+			return(null)
 		
 
 func play(caster):

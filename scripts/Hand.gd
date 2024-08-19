@@ -102,8 +102,9 @@ func _input(event):
 		else: 
 			unstage_cards()
 			stage_card(current_seleted_card_index)
-	if card_staged == true and staged_index >= 0: # handle playing of the card
-	#!! remove_card returns the object and use card.get_card_name() to get its name as string!!
+	if card_staged == true and staged_index >= 0 and int($ManaAmount.get_text()) - hand[staged_index].get_card_cost(): # handle playing of the card
+	#!! remove_card just returns hand[index] passed in
+	
 		if event.is_action_pressed("keypress_j"): #play J
 			var card = remove_card(staged_index)
 			var card_name = card.get_card_name()

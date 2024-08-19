@@ -10,19 +10,19 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	$ManaAmount.set_text(str($GameScreen/PlayerCharacter.mana))
-	$GameScreen/PlayerCharacter/ShieldNum.set_text(str($GameScreen/PlayerCharacter.shield))
 	if $GameScreen/PlayerCharacter.health <= 0:
 		print("game over")
 		# add actual mechanic so they acnt play
 
 
-func _on_deck_hand_card_activated(card: UsableCard, action: String):
+func _on_deck_hand_card_activated(card: UsableCard, action: String, hand):
 	card.activate({
 		"caster": $GameScreen/PlayerCharacter,
 		"targets": [$GameScreen/EnemyCharacter], # change this to an index this is for debugging
 		"card": card,
 		"action": action
 	})
+
 
 
 func _on_inflict_1_button_pressed():
