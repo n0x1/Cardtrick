@@ -11,10 +11,10 @@ func activate(game_state: Dictionary):
 	if action == "play":
 		play(caster)
 	elif action == "throw":
-		throw(targets)
+		throw(caster, targets)
 	elif action == "rip": # rip combines both effects
 		play(caster)
-		throw(targets)
+		throw(caster, targets)
 	else:
 		print("INVALID action passed (??)!!!")
 		return(null)
@@ -23,9 +23,8 @@ func activate(game_state: Dictionary):
 func play(caster):
 	caster.change_shield(6) # gain 6 shield
 
-func throw(targets):
-	# if player not shielded: deal 4
-	# targets[0].take_damage(4) 
-	# if player shielded : deal 12
-	#targets[0].take_damage(12) 
-	pass
+func throw(caster, targets):
+	if caster.shield > 0:
+		targets[0].take_damage(12) 
+	else:
+		targets[0].take_damage(4) 

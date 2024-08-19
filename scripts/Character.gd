@@ -1,8 +1,9 @@
 @tool
 class_name Character extends Node2D
 
-@export var max_health: int = 10
-@export var health: int = 10
+@export var max_health: int = 100
+@export var health: int = 100
+@export var shield: int = 0
 @export var mana: int = 5
 
 func spend_mana(amount: int):
@@ -10,15 +11,18 @@ func spend_mana(amount: int):
 	mana -= amount
 	#else:
 		#display some message or error sound
-	pass
 
 func take_damage(amount: int):
-	health -= amount
-	pass
+	if shield > 0: # dmg first goes to shield
+		shield -= amount
+		if shield < 0:
+			health += shield # shield will be negative so +
+			shield = 0
+	else:
+		health -= amount
 
-func change_shield(shield: int):
-	#player_shield += shield
-	pass
+func change_shield(amount: int):
+	shield += amount
 
 func change_attack(amount: int):
 	# attack += amount
@@ -37,7 +41,7 @@ func update_healthbar(): # hp bar graphical update only
 		($Healthbar as ProgressBar).max_value = max_health 
 	if ($Healthbar as ProgressBar).value != health:
 		($Healthbar as ProgressBar).value = health
-	
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

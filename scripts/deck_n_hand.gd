@@ -28,4 +28,3 @@ func _on_button_2_pressed():
 
 func _on_hand_card_activated(card, action): # bring up to Main node
 	card_activated.emit(card, action)
-	pass # Replace with function body.

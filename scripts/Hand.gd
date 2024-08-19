@@ -33,12 +33,12 @@ func add_card(card: Node2D):
 
 func remove_card(index: int) -> Node2D:
 	var removing_card = hand[index]
-	
-	hand.remove_at(index)
-	if touched.size() > 0:
-		touched.remove_at(touched.find(removing_card))
 	remove_child(removing_card)
+	hand.remove_at(index)
 	
+	# if touched.size() > 0:#not needed for staging
+		#touched.remove_at(touched.find(removing_card)) #not needed for staging only right out of hand
+
 	unstage_cards()
 
 	return removing_card # removed from data but returned
@@ -105,23 +105,26 @@ func _input(event):
 	if card_staged == true and staged_index >= 0: # handle playing of the card
 	#!! remove_card returns the object and use card.get_card_name() to get its name as string!!
 		if event.is_action_pressed("keypress_j"): #play J
-			var card = remove_card(staged_index).get_card_name()
+			var card = remove_card(staged_index)
+			var card_name = card.get_card_name()
 			var action = "play"
 			card_activated.emit(card, action)
 			
-			print("played " + card)
+			print("played " + card_name)
 		if event.is_action_pressed("keypress_k"): #throw K
-			var card = remove_card(staged_index).get_card_name()
+			var card = remove_card(staged_index)
+			var card_name = card.get_card_name()
 			var action = "throw"
 			card_activated.emit(card, action)
 			
-			print("threw " + card)
+			print("threw " + card_name)
 		if event.is_action_pressed("keypress_l"): #rip L
-			var card = remove_card(staged_index).get_card_name()
+			var card = remove_card(staged_index)
+			var card_name = card.get_card_name()
 			var action = "rip"
 			card_activated.emit(card, action)
 			
-			print("ripped " + card)
+			print("ripped " + card_name)
 			
 		# card.queue_free() # remove from memory after scaling scale
 		current_seleted_card_index = -1
