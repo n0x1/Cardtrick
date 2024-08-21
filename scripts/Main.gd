@@ -83,6 +83,8 @@ func _on_end_turn_pressed():
 	if game_control.current_state == GameController.GameState.PLAYER_TURN:
 		game_control.transition(GameController.GameState.ENEMY_TURN)
 		$GameScreen/EnemyCharacter.start_turn()
+		get_node("DeckHand/Hand").unstage_cards()
+		
 
 
 func _on_button_pressed(): # game over button

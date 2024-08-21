@@ -7,7 +7,7 @@ func activate(game_state: Dictionary):
 	var action = game_state.get("action") 
 	
 	if caster.spend_mana(3) == true: 
-	
+		caster.play_sound("res://sounds/blizzard.mp3", 1)
 		if action == "play":
 			play(targets)
 		elif action == "throw":
@@ -19,6 +19,7 @@ func activate(game_state: Dictionary):
 			print("INVALID action passed (??)!!!")
 			return(null)
 		
+		
 
 func play(targets):
 	for target in targets:
@@ -26,5 +27,9 @@ func play(targets):
 
 func throw(targets):
 	for target in targets:
-		target.bleeding = true
-		target.bleed(3, 5)
+		if target.bleeding != true:
+			target.bleeding = true
+			target.bleed(3, 5)
+		else:
+			target.saved_turns += 5 # just extend otherwise.
+			

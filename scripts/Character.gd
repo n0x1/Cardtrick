@@ -112,3 +112,12 @@ func _process(delta):
 	update_shield_icon_values()
 	
 
+func wait(seconds: float) -> void:
+	await get_tree().create_timer(seconds).timeout
+
+func play_sound(sound_file, pitch_scale):
+	print("played " + sound_file)
+	var audio_stream = ResourceLoader.load(sound_file)
+	$AudioPlayer.stream = audio_stream
+	$AudioPlayer.pitch_scale = pitch_scale
+	$AudioPlayer.play()

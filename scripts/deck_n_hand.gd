@@ -5,6 +5,7 @@ signal card_activated(card, action: String)
 @onready var claymore_card_scene: PackedScene = preload("res://scenes/cards/claymore.tscn")
 @onready var shield_card_scene: PackedScene = preload("res://scenes/cards/shield.tscn")
 @onready var blizzard_card_scene: PackedScene = preload("res://scenes/cards/blizzard.tscn")
+@onready var brassknuckle_card_scene: PackedScene = preload("res://scenes/cards/brassknuckle.tscn")
 
 @onready var hand = $Hand
 # Called when the node enters the scene tree for the first time.
@@ -23,8 +24,8 @@ func _on_button_pressed():
 
 
 func _on_button_2_pressed():
-	var shield_card = shield_card_scene.instantiate()
-	hand.add_card(shield_card)
+	var d = brassknuckle_card_scene.instantiate()
+	hand.add_card(d)
 
 
 func _on_hand_card_activated(staged_index, card, card_cost, action): # bring up to Main node
