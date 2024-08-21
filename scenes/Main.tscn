@@ -1,12 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://cg841d3cpmpjd"]
+[gd_scene load_steps=10 format=3 uid="uid://cg841d3cpmpjd"]
 
 [ext_resource type="PackedScene" uid="uid://bnj8i1ngctqf2" path="res://scenes/deck_n_hand.tscn" id="1_vfrus"]
 [ext_resource type="Script" path="res://scripts/Main.gd" id="1_wrmrq"]
 [ext_resource type="Script" path="res://scripts/Character.gd" id="2_4j42c"]
 [ext_resource type="Script" path="res://scripts/GameController.gd" id="2_hmnxx"]
 [ext_resource type="Texture2D" uid="uid://cprhgxh2562ej" path="res://sprites/player.png" id="2_i104c"]
-[ext_resource type="Texture2D" uid="uid://ct103svanepry" path="res://sprites/Enemies/Mushroom.png" id="3_38wu3"]
 [ext_resource type="Texture2D" uid="uid://td5peavms807" path="res://sprites/Icons/defendicon.png" id="5_4i1j7"]
+[ext_resource type="Texture2D" uid="uid://dde0vmmtkx35f" path="res://sprites/Icons/damage_change_sword.png" id="7_y22q8"]
+[ext_resource type="Texture2D" uid="uid://ct103svanepry" path="res://sprites/Enemies/Mushroom.png" id="9_xtex8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_70d4t"]
 bg_color = Color(1, 0.117647, 0.211765, 1)
@@ -29,6 +30,8 @@ script = ExtResource("2_hmnxx")
 [node name="PlayerCharacter" type="Node2D" parent="GameScreen"]
 position = Vector2(693, 725)
 script = ExtResource("2_4j42c")
+max_health = 10
+health = 10
 
 [node name="PlayerSprite" type="Sprite2D" parent="GameScreen/PlayerCharacter"]
 position = Vector2(181, 176)
@@ -41,7 +44,8 @@ offset_top = -290.0
 offset_right = 294.0
 offset_bottom = -266.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_70d4t")
-value = 100.0
+max_value = 10.0
+value = 10.0
 show_percentage = false
 
 [node name="HealthText" type="Label" parent="GameScreen/PlayerCharacter/Healthbar"]
@@ -50,7 +54,7 @@ offset_left = 25.0
 offset_top = 3.0
 offset_right = 187.0
 offset_bottom = 23.0
-text = "100/100"
+text = "10/10"
 horizontal_alignment = 1
 
 [node name="Shield" type="Sprite2D" parent="GameScreen/PlayerCharacter"]
@@ -68,38 +72,53 @@ theme_override_font_sizes/font_size = 40
 text = "0"
 horizontal_alignment = 2
 
-[node name="EnemyCharacter" type="Node2D" parent="GameScreen"]
-position = Vector2(1737, 641)
-script = ExtResource("2_4j42c")
-max_health = 25
-health = 25
+[node name="AttackChange" type="Sprite2D" parent="GameScreen/PlayerCharacter"]
+visible = false
+position = Vector2(283, -244)
+scale = Vector2(0.71875, 0.734375)
+texture = ExtResource("7_y22q8")
 
-[node name="EnemyMush" type="Sprite2D" parent="GameScreen/EnemyCharacter"]
-position = Vector2(124, 39)
-scale = Vector2(2.7, 2.7)
-texture = ExtResource("3_38wu3")
+[node name="AttackChgNum" type="Label" parent="GameScreen/PlayerCharacter/AttackChange"]
+offset_left = -57.0435
+offset_top = -28.5958
+offset_right = -21.0435
+offset_bottom = 20.4042
+theme_override_font_sizes/font_size = 40
+text = "0"
+horizontal_alignment = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="EnemyCharacter" type="Node2D" parent="GameScreen"]
+position = Vector2(1562, 709)
+script = ExtResource("2_4j42c")
+
+[node name="EnemySprite" type="Sprite2D" parent="GameScreen/EnemyCharacter"]
+position = Vector2(186, 15)
+scale = Vector2(4.2, 4.2)
+texture = ExtResource("9_xtex8")
 
 [node name="Healthbar" type="ProgressBar" parent="GameScreen/EnemyCharacter"]
-offset_left = 42.0
-offset_top = -168.0
-offset_right = 212.0
-offset_bottom = -144.0
+offset_left = 73.0
+offset_top = -290.0
+offset_right = 294.0
+offset_bottom = -266.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_70d4t")
 max_value = 25.0
 value = 25.0
 show_percentage = false
 
 [node name="HealthText" type="Label" parent="GameScreen/EnemyCharacter/Healthbar"]
 layout_mode = 0
-offset_left = 8.0
-offset_top = 2.0
-offset_right = 155.0
-offset_bottom = 24.0
+offset_left = 25.0
+offset_top = 3.0
+offset_right = 187.0
+offset_bottom = 23.0
 text = "25/25"
 horizontal_alignment = 1
 
 [node name="Shield" type="Sprite2D" parent="GameScreen/EnemyCharacter"]
 visible = false
-position = Vector2(188, -195)
+position = Vector2(254, -317)
 scale = Vector2(1.15625, 1.125)
 texture = ExtResource("5_4i1j7")
 
@@ -112,13 +131,30 @@ theme_override_font_sizes/font_size = 40
 text = "0"
 horizontal_alignment = 2
 
+[node name="AttackChange" type="Sprite2D" parent="GameScreen/EnemyCharacter"]
+visible = false
+position = Vector2(283, -244)
+scale = Vector2(0.71875, 0.734375)
+texture = ExtResource("7_y22q8")
+
+[node name="AttackChgNum" type="Label" parent="GameScreen/EnemyCharacter/AttackChange"]
+offset_left = -57.0435
+offset_top = -28.5958
+offset_right = -21.0435
+offset_bottom = 20.4042
+theme_override_font_sizes/font_size = 40
+text = "0"
+horizontal_alignment = 2
+metadata/_edit_use_anchors_ = true
+
 [node name="ManaAmount" type="Label" parent="."]
 offset_left = 109.0
 offset_top = 30.0
-offset_right = 149.0
-offset_bottom = 50.0
+offset_right = 183.0
+offset_bottom = 151.0
 theme_override_font_sizes/font_size = 100
 text = "10"
+horizontal_alignment = 1
 
 [node name="Inflict1Button" type="Button" parent="."]
 offset_left = 488.0
@@ -130,10 +166,61 @@ text = "Inflict 1 damage"
 [node name="Inflict3Button" type="Button" parent="."]
 offset_left = 619.0
 offset_top = 187.0
-offset_right = 712.0
+offset_right = 715.0
 offset_bottom = 215.0
 text = "Inflict 3 damage"
+
+[node name="EndTurn" type="Button" parent="."]
+offset_left = 84.0
+offset_top = 129.0
+offset_right = 205.0
+offset_bottom = 181.0
+theme_override_font_sizes/font_size = 36
+text = "End Turn
+"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GameOverOverlay" type="ColorRect" parent="CanvasLayer"]
+visible = false
+z_index = 4096
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.839216, 0, 0.0117647, 0.337255)
+
+[node name="Label" type="Label" parent="CanvasLayer/GameOverOverlay"]
+offset_left = 1185.0
+offset_top = 570.0
+offset_right = 1375.0
+offset_bottom = 666.0
+theme_override_font_sizes/font_size = 80
+text = "Game Over
+"
+
+[node name="VictoryOverlay" type="ColorRect" parent="CanvasLayer"]
+visible = false
+z_index = 4096
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.368627, 0.113725, 0.462745)
+
+[node name="Label" type="Label" parent="CanvasLayer/VictoryOverlay"]
+layout_mode = 0
+offset_left = 1185.0
+offset_top = 570.0
+offset_right = 1375.0
+offset_bottom = 666.0
+theme_override_font_sizes/font_size = 80
+text = "Victory
+"
 
 [connection signal="card_activated" from="DeckHand" to="." method="_on_deck_hand_card_activated"]
 [connection signal="pressed" from="Inflict1Button" to="." method="_on_inflict_1_button_pressed"]
 [connection signal="pressed" from="Inflict3Button" to="." method="_on_inflict_3_button_pressed"]
+[connection signal="pressed" from="EndTurn" to="." method="_on_end_turn_pressed"]
