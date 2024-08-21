@@ -2,12 +2,16 @@
 class_name Character extends Node2D
 
 @export var sprite_texture: CompressedTexture2D
-@export var max_health: int = 25
-@export var health: int = 25
+@export var max_health: int = 15
+@export var health: int = 15
 @export var shield: int = 0
-@export var mana: int = 3
-@export var current_mana_cap: int = 3
+var mana: int = 3
+var current_mana_cap: int = 3
 @export var damage_change: int = 0 # positive indicates buff and negative nerfs
+@export var bleeding: bool = false
+var saved_amount: int = 0 # forbleeding
+var saved_turns: int = 0 # forbleeding
+
 func spend_mana(amount: int):
 	if mana - amount >= 0:
 		mana -= amount
@@ -25,6 +29,22 @@ func take_damage(amount: int):
 				shield = 0
 		else:
 			health -= amount
+
+var bleedcount = 0 #init 
+func bleed(amount: int, turns: int):
+	if bleedcount == 0:
+		saved_amount = amount
+		saved_turns = turns
+	if bleeding == true:
+		bleedcount += 1
+		saved_turns -= 1
+		take_damage(saved_amount)
+		if turns <= 1:
+			bleedcount = 0
+			bleeding = false
+	if health < 0:
+			bleeding = false
+			bleedcount = 0
 
 func change_shield(amount: int):
 	shield += amount
@@ -53,20 +73,32 @@ func update_healthbar(): # hp bar graphical update only
 func update_shield_icon_values():
 	$"Shield".visible = shield > 0 # returns true or false
 	$"Shield/ShieldNum".set_text(str(shield))
-	$"AttackChange".visible = damage_change != 0 
+	$"AttackChange".visible = damage_change != 0
+	$Bleeding.visible = bleeding
 	if damage_change > 0:
 		$"AttackChange/AttackChgNum".set_text("+" + str(damage_change))
 	else:
 		$"AttackChange/AttackChgNum".set_text(str(damage_change))
-	
+	if bleeding == true:
+		$Bleeding/BleedingLabel.set_text("-" + str(saved_amount))
+		$Bleeding/TurnLabel.set_text(str(saved_turns))
+	else:
+		$Bleeding/BleedingLabel.set_text("")
+		$Bleeding/TurnLabel.set_text("")
+		
 	
 func start_turn():
 	if shield > 0: 
 		shield -=1 # decay so balanced ig
+		
 	if damage_change > 0: #decay
 		damage_change -= 1
 	elif damage_change < 0:
 		damage_change += 1
+		
+	if bleeding == true:
+		bleed(saved_amount, saved_turns)
+		
 	mana = current_mana_cap
 	
 # Called when the node enters the scene tree for the first time.

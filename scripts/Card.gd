@@ -4,10 +4,10 @@ extends Node2D
 signal mouse_entered(card: Card)
 signal mouse_exited(card: Card)
 
-@export var CardName: String = "CardName"
-@export var PlayDescription: String = "PlayDesc"
-@export var ThrowDescription: String = "ThrowDesc"
-@export var CardCost: int = 1
+@export var CardName: String
+@export var PlayDescription: String
+@export var ThrowDescription: String
+@export var CardCost: int
 @export var CardImage: Sprite2D
 
 var card_staged = false
