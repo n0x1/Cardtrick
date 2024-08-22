@@ -29,6 +29,23 @@ func take_damage(amount: int):
 				shield = 0
 		else:
 			health -= amount
+	if self.name == "PlayerCharacter": # player hit sounds based on how much damage taken
+		if amount > 0 and amount <= 2: # i considered doing percentages, but its cool as you get stronger ot keep hearing the hard hits
+			play_sound("res://sounds/playerhit_light.mp3", 1.5)
+		elif amount > 2 and amount < 5:
+			play_sound("res://sounds/playerhit_light.mp3", 1.2)
+		elif amount >= 5 and amount < 10:
+			play_sound("res://sounds/playerhit_medium.mp3", 0.7)
+		elif amount >= 10 and amount < 15:
+			play_sound("res://sounds/playerhit_hard.mp3", 1)
+		elif amount >= 15:
+			if amount < max_health / 50:
+				play_sound("res://sounds/playerhit_hard.mp3", 0.75)
+			elif amount >= max_health / 50: # elif just incase 
+				play_sound("res://sounds/playerhit_hard.mp3", 0.5)
+
+
+			
 
 var bleedcount = 0 #init 
 func bleed(amount: int, turns: int):

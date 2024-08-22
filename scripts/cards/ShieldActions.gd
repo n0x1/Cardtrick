@@ -22,9 +22,12 @@ func activate(game_state: Dictionary):
 
 func play(caster):
 	caster.change_shield(6) # gain 6 shield
+	caster.play_sound("res://sounds/armorup.mp3", 1)
 
 func throw(caster, targets):
 	if caster.shield > 0:
 		targets[0].take_damage(12) 
+		caster.play_sound("res://sounds/bash.mp3", 0.6)
 	else:
 		targets[0].take_damage(4) 
+		caster.play_sound("res://sounds/bash.mp3", 0.9)

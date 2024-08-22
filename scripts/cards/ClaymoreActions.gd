@@ -7,7 +7,7 @@ func activate(game_state: Dictionary):
 	var action = game_state.get("action") 
 	#spend mana/cost
 	if caster.spend_mana(1) == true: # can also implement function to get cost but const in code is easy
-
+		caster.play_sound("res://sounds/slash.mp3", 1)
 		if action == "play":
 			play(targets)
 		elif action == "throw":

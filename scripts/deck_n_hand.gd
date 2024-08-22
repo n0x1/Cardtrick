@@ -2,7 +2,7 @@ extends Node2D
 
 signal card_activated(card, action: String)
 
-@onready var claymore_card_scene: PackedScene = preload("res://scenes/cards/claymore.tscn")
+@onready var ccs: PackedScene = preload("res://scenes/cards/claymore.tscn")
 @onready var shield_card_scene: PackedScene = preload("res://scenes/cards/shield.tscn")
 @onready var blizzard_card_scene: PackedScene = preload("res://scenes/cards/blizzard.tscn")
 @onready var brassknuckle_card_scene: PackedScene = preload("res://scenes/cards/brassknuckle.tscn")
@@ -19,12 +19,12 @@ func _process(delta):
 
 
 func _on_button_pressed():
-	var c = blizzard_card_scene.instantiate()
+	var c = ccs.instantiate()
 	hand.add_card(c)
 
 
 func _on_button_2_pressed():
-	var d = brassknuckle_card_scene.instantiate()
+	var d = shield_card_scene.instantiate()
 	hand.add_card(d)
 
 
