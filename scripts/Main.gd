@@ -103,3 +103,7 @@ func _on_button_pressed(): # game over button
 func _on_victory_button_pressed(): # victory
 	level += 1
 	$CanvasLayer/VictoryOverlay.visible = false
+
+
+func _on_deck_button_pressed():
+	pass # Replace with function body.
