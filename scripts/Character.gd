@@ -43,7 +43,8 @@ func take_damage(amount: int):
 				play_sound("res://sounds/playerhit_hard.mp3", 0.75)
 			elif amount >= max_health / 50: # elif just incase 
 				play_sound("res://sounds/playerhit_hard.mp3", 0.5)
-
+	if health <= 0:
+		self.hide()
 
 			
 

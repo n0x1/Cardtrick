@@ -15,6 +15,8 @@ signal hide_deck_view()
 @onready var timer = $Timer
 
 var hand: Array = []
+var discard_pile: Array = []
+var recoverable_thrown_cards: Array = []
 var touched: Array = []
 var current_seleted_card_index: int = -1
 
@@ -27,10 +29,11 @@ var scale_speed = 17.65
 var raised_z_index = 99  
 
 func add_card(card: Node2D):
-	hand.push_back(card)
-	add_child(card)
-	card.mouse_entered.connect(_handle_card_touched)
-	card.mouse_exited.connect(_handle_card_untouched)
+	var dupe = card.duplicate()
+	hand.push_back(dupe)
+	add_child(dupe)
+	dupe.mouse_entered.connect(_handle_card_touched)
+	dupe.mouse_exited.connect(_handle_card_untouched)
 	reposition_cards()
 	$StagedLabel.visible = false
 
@@ -38,13 +41,20 @@ func remove_card(index: int) -> Node2D:
 	var removing_card = hand[index]
 	remove_child(removing_card)
 	hand.remove_at(index)
-	
+	$"..".deck.remove_card(index)
 	# if touched.size() > 0:#not needed for staging
 		#touched.remove_at(touched.find(removing_card)) #not needed for staging only right out of hand
 
 	unstage_cards()
 
 	return removing_card # removed from data but returned
+
+func discard(index):
+	var discarding_card = hand[index]
+	discard_pile.push_back(discarding_card)
+	remove_child(discarding_card)
+	hand.remove_at(index)
+	unstage_cards()
 
 func stage_card(index):
 	make_NEM_invisible()
@@ -114,10 +124,14 @@ func _input(event):
 	
 		if event.is_action_pressed("keypress_j"): #play J
 			card_ability("play")
+			discard(staged_index)
 		if event.is_action_pressed("keypress_k"): #throw K
 			card_ability("throw")
+			recoverable_thrown_cards.push_back(hand[staged_index])
+			remove_card(staged_index)
 		if event.is_action_pressed("keypress_l"): #rip L
 			card_ability("rip")
+			remove_card(staged_index)
 			
 			
 		# card.queue_free() # remove from memory after scaling scale

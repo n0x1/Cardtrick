@@ -1,6 +1,6 @@
 class_name CardContainer extends Container
 
-const CARD_COMPONENT_POSITION = Vector2(132,435)
+const CARD_COMPONENT_POSITION = Vector2(132,441)
 
 var card: UsableCard:
 	set(_card):

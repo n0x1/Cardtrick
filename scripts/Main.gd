@@ -8,7 +8,7 @@ extends Node2D
 @onready var deck: Deck = Deck.new()
 
 var enemy_character_state: int = 0
-var level: int = 1
+var level: int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -31,7 +31,7 @@ func _process(delta):
 	if game_control.current_state == GameController.GameState.ENEMY_TURN:
 		#ai logic
 		var enemydamagechange = $GameScreen/EnemyCharacter.damage_change # change this to iterate for multi enemy lvls
-		if level == 1: #mushroom
+		if posmod(level, 3) == 0: #mushroom
 			if enemy_character_state == 0:
 				$GameScreen/EnemyCharacter.change_shield(3)
 			elif enemy_character_state == 1:
@@ -47,13 +47,10 @@ func _process(delta):
 		
 	if game_control.current_state == GameController.GameState.VICTORY:
 		$CanvasLayer/VictoryOverlay.visible = true
-	else:
-		$CanvasLayer/VictoryOverlay.visible = false
 		
 	if game_control.current_state == GameController.GameState.GAMEOVER:
 		$CanvasLayer/GameOverOverlay.visible = true
-	else:
-		$CanvasLayer/GameOverOverlay.visible = false
+
 
 
 func _on_deck_hand_card_activated(staged_index, card: UsableCard, card_cost, action: String):
@@ -65,7 +62,7 @@ func _on_deck_hand_card_activated(staged_index, card: UsableCard, card_cost, act
 			"card": card,
 			"action": action
 		})
-		hand_node.remove_card(staged_index)
+
 		hand_node.make_NEM_invisible()
 	else:
 		hand_node.unstage_cards()
@@ -93,7 +90,7 @@ func _on_end_turn_pressed():
 		
 
 
-func _on_button_pressed(): # game over button
+func _on_button_pressed(): # restart the game
 	game_control.current_state = GameController.GameState.PLAYER_TURN
 	$GameScreen/PlayerCharacter.max_health = 15 
 	$GameScreen/PlayerCharacter.health = 15
@@ -103,12 +100,15 @@ func _on_button_pressed(): # game over button
 	$GameScreen/PlayerCharacter.damage_change = 0
 	$GameScreen/PlayerCharacter.bleeding = false
 	$CanvasLayer/GameOverOverlay.visible = false
+	$GameScreen/PlayerCharacter.show()
 
 
 
 func _on_victory_button_pressed(): # victory
+	game_control.current_state = GameController.GameState.PLAYER_TURN
 	level += 1
-	$CanvasLayer/VictoryOverlay.visible = false
+	$CanvasLayer.hide()
+	$CanvasLayer/VictoryOverlay.hide() #idk why it wasnt just working..
 
 
 func _on_deck_button_pressed():

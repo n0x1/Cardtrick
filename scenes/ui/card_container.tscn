@@ -3,5 +3,5 @@
 [ext_resource type="Script" path="res://scripts/ui/card_container.gd" id="1_vamgc"]
 
 [node name="CardContainer" type="Container"]
-custom_minimum_size = Vector2(285, 452)
+custom_minimum_size = Vector2(285, 460)
 script = ExtResource("1_vamgc")
