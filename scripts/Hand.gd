@@ -2,6 +2,7 @@
 class_name Hand extends Node2D 
 
 signal card_activated(card: UsableCard, action: String)
+signal hide_deck_view()
 
 @export var hand_radius: int = 1
 @export var card_angle: float = -90
@@ -47,6 +48,7 @@ func remove_card(index: int) -> Node2D:
 
 func stage_card(index):
 	make_NEM_invisible()
+	hide_deck_view.emit()
 
 	var card = hand[index]
 	staged_index = index

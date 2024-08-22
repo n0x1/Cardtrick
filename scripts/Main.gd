@@ -112,6 +112,25 @@ func _on_victory_button_pressed(): # victory
 
 
 func _on_deck_button_pressed():
+	if deck_view_overlay.visible == false:
+		show_deck_view()
+	else:
+		hide_deck_view()
+
+
+
+func _on_deck_hand_hide_deck_view():
+	hide_deck_view()
+
+func show_deck_view():
 	(game_control as GameController).pause()
 	deck_view_overlay.visible = true
 	deck_view_overlay.display_card_list(deck.get_cards()) # pass array of list of UsableCard s
+	$CanvasLayer/DeckViewBgRect.visible = true
+	(get_node("DeckHand/Hand") as Hand).unstage_cards()
+
+func hide_deck_view():
+	(game_control as GameController).resume()
+	deck_view_overlay.visible = false
+	$CanvasLayer/DeckViewBgRect.visible = false
+	

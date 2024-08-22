@@ -9,6 +9,7 @@
 size = Vector2(257, 441)
 
 [node name="Card" type="Node2D"]
+z_index = 5
 position = Vector2(174, 253)
 script = ExtResource("1_74co5")
 CardName = "I am a new card name!"
@@ -72,8 +73,10 @@ text = "newdesc"
 autowrap_mode = 2
 
 [node name="CardImage" type="Node2D" parent="."]
+z_index = 5
 
 [node name="CardImageSprite" type="Sprite2D" parent="CardImage"]
+z_index = 6
 position = Vector2(6, -41)
 scale = Vector2(1.45, 1.65)
 

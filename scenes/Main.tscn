@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cg841d3cpmpjd"]
+[gd_scene load_steps=16 format=3 uid="uid://cg841d3cpmpjd"]
 
 [ext_resource type="PackedScene" uid="uid://bnj8i1ngctqf2" path="res://scenes/deck_n_hand.tscn" id="1_vfrus"]
 [ext_resource type="Script" path="res://scripts/Main.gd" id="1_wrmrq"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://ct103svanepry" path="res://sprites/Enemies/Mushroom.png" id="9_xtex8"]
 [ext_resource type="PackedScene" uid="uid://cq8thleckxxw8" path="res://scenes/ui/deck_view_window.tscn" id="10_b55e0"]
 [ext_resource type="Texture2D" uid="uid://5prk4i512iqu" path="res://sprites/Icons/deckbutton.png" id="10_o1fi1"]
+[ext_resource type="Texture2D" uid="uid://c0wogc7rilco7" path="res://sprites/deckviewui.png" id="11_cwtun"]
 [ext_resource type="Texture2D" uid="uid://ct0iq5rgs1l27" path="res://sprites/Icons/deck_open.png" id="11_yg7ln"]
 [ext_resource type="Texture2D" uid="uid://dotr7g86h4gyc" path="res://sprites/Icons/deck_click.png" id="12_fyua0"]
 
@@ -314,8 +315,20 @@ offset_top = 55.0
 offset_right = 1850.0
 offset_bottom = 993.0
 
+[node name="DeckViewBgRect" type="TextureRect" parent="CanvasLayer"]
+visible = false
+offset_left = 129.0
+offset_top = 180.0
+offset_right = 1930.0
+offset_bottom = 1182.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("11_cwtun")
+
 [node name="DeckViewWindow" parent="CanvasLayer" instance=ExtResource("10_b55e0")]
 visible = false
+offset_top = -600.0
+offset_bottom = 402.0
 
 [node name="DeckButton" type="TextureButton" parent="."]
 offset_left = 198.0
@@ -328,6 +341,7 @@ texture_hover = ExtResource("11_yg7ln")
 stretch_mode = 0
 
 [connection signal="card_activated" from="DeckHand" to="." method="_on_deck_hand_card_activated"]
+[connection signal="hide_deck_view" from="DeckHand" to="." method="_on_deck_hand_hide_deck_view"]
 [connection signal="pressed" from="Inflict1Button" to="." method="_on_inflict_1_button_pressed"]
 [connection signal="pressed" from="Inflict3Button" to="." method="_on_inflict_3_button_pressed"]
 [connection signal="pressed" from="EndTurn" to="." method="_on_end_turn_pressed"]

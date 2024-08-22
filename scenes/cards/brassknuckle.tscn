@@ -16,6 +16,7 @@ PlayDescription = "Deal 3x2 DMG. Weaken target by 1 for each hit"
 ThrowDescription = "Fully break a target's shield"
 
 [node name="CardImage" type="Sprite2D" parent="."]
+z_index = 5
 position = Vector2(4.74975, -274)
 scale = Vector2(2.02734, 2.65625)
 texture = ExtResource("3_gxn2u")

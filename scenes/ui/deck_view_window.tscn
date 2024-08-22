@@ -15,6 +15,7 @@ offset_right = 930.0
 offset_bottom = 296.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_vertical = 3
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 script = ExtResource("1_rfb4c")

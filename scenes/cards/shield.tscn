@@ -17,6 +17,7 @@ ThrowDescription = "Deal 4 DMG. If player shielded, deals +8 DMG."
 CardCost = 2
 
 [node name="CardImage" type="Sprite2D" parent="."]
+z_index = 5
 position = Vector2(4.74975, -274)
 scale = Vector2(2.02734, 2.65625)
 texture = ExtResource("2_i111m")
