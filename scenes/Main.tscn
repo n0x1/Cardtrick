@@ -276,8 +276,7 @@ offset_bottom = 394.44
 theme_override_font_sizes/font_size = 40
 text = "Restart"
 
-[node name="VictoryOverlay" type="ColorRect" parent="CanvasLayer"]
-visible = false
+[node name="WinOverlay" type="ColorRect" parent="CanvasLayer"]
 z_index = 4095
 anchors_preset = 15
 anchor_right = 1.0
@@ -286,7 +285,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0.368627, 0.113725, 0.462745)
 
-[node name="Label" type="Label" parent="CanvasLayer/VictoryOverlay"]
+[node name="Label" type="Label" parent="CanvasLayer/WinOverlay"]
 layout_mode = 0
 offset_left = 902.0
 offset_top = 566.0
@@ -296,25 +295,28 @@ theme_override_font_sizes/font_size = 80
 text = "Victory
 "
 
-[node name="VictoryButton" type="Button" parent="CanvasLayer/VictoryOverlay"]
+[node name="ButtonV" type="Button" parent="CanvasLayer/WinOverlay"]
 z_index = 4096
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.208
 anchor_bottom = 0.226
-offset_left = 917.0
-offset_top = 663.0
-offset_right = 660.0
-offset_bottom = 400.44
+offset_left = 916.0
+offset_top = 730.0
+offset_right = 659.0
+offset_bottom = 467.44
 theme_override_font_sizes/font_size = 40
 text = "Advance"
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
-visible = false
-offset_left = 175.0
-offset_top = 55.0
-offset_right = 1850.0
-offset_bottom = 993.0
+[node name="RecoverText" type="Label" parent="CanvasLayer/WinOverlay"]
+layout_mode = 0
+offset_left = 824.0
+offset_top = 665.0
+offset_right = 1191.0
+offset_bottom = 777.0
+theme_override_font_sizes/font_size = 38
+text = "Recovered Thrown: Claymore"
+horizontal_alignment = 1
 
 [node name="DeckViewBgRect" type="TextureRect" parent="CanvasLayer"]
 visible = false
@@ -347,5 +349,5 @@ stretch_mode = 0
 [connection signal="pressed" from="Inflict3Button" to="." method="_on_inflict_3_button_pressed"]
 [connection signal="pressed" from="EndTurn" to="." method="_on_end_turn_pressed"]
 [connection signal="pressed" from="CanvasLayer/GameOverOverlay/Button" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/VictoryOverlay/VictoryButton" to="." method="_on_victory_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/WinOverlay/ButtonV" to="." method="_on_button_v_pressed"]
 [connection signal="pressed" from="DeckButton" to="." method="_on_deck_button_pressed"]

@@ -12,6 +12,8 @@ var current_mana_cap: int = 3
 var saved_amount: int = 0 # forbleeding
 var saved_turns: int = 0 # forbleeding
 
+
+
 func spend_mana(amount: int):
 	if mana - amount >= 0:
 		mana -= amount

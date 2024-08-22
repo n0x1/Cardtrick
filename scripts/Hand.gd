@@ -28,14 +28,20 @@ var target_scale = Vector2(1.2, 1.2)
 var scale_speed = 17.65 
 var raised_z_index = 99  
 
-func add_card(card: Node2D):
+func add_card(card: Node2D, action):
 	var dupe = card.duplicate()
 	hand.push_back(dupe)
 	add_child(dupe)
+	
+	if action == "draw from discard":
+		var removing_index = discard_pile.find(card)
+		discard_pile.remove_at(removing_index)
+		
 	dupe.mouse_entered.connect(_handle_card_touched)
 	dupe.mouse_exited.connect(_handle_card_untouched)
 	reposition_cards()
-	$StagedLabel.visible = false
+	if $StagedLabel.visible == true:
+		$StagedLabel.hide()
 
 func remove_card(index: int) -> Node2D:
 	var removing_card = hand[index]
@@ -124,14 +130,10 @@ func _input(event):
 	
 		if event.is_action_pressed("keypress_j"): #play J
 			card_ability("play")
-			discard(staged_index)
 		if event.is_action_pressed("keypress_k"): #throw K
 			card_ability("throw")
-			recoverable_thrown_cards.push_back(hand[staged_index])
-			remove_card(staged_index)
 		if event.is_action_pressed("keypress_l"): #rip L
 			card_ability("rip")
-			remove_card(staged_index)
 			
 			
 		# card.queue_free() # remove from memory after scaling scale

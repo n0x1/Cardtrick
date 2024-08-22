@@ -1,4 +1,4 @@
-extends Node2D
+class_name DeckNHand extends Node2D
 
 signal card_activated(card, action: String)
 signal hide_deck_view()
@@ -22,7 +22,7 @@ func _process(delta):
 
 func add_to_deckview_and_hand(card):
 	deck.add_card(card)
-	$Hand.add_card(card)
+	$Hand.add_card(card, "init") # just not so its  draw from discard pile
 
 func _on_button_pressed():
 	var c = ccs.instantiate()

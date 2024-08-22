@@ -33,7 +33,10 @@ func transition(next_state: GameState):
 	#entering state
 	match current_state:
 		GameState.PLAYER_TURN:
-			pass
+			var player_hand = $"../DeckHand/Hand" as Hand
+			if player_hand.discard_pile.size() > 0:
+				var random_discarded = player_hand.discard_pile.pick_random()
+				player_hand.add_card(random_discarded, "draw from discard")
 		GameState.ENEMY_TURN:
 			pass
 		GameState.GAMEOVER:
