@@ -17,6 +17,7 @@ func remove_card(card_id: int): # this ONLY removes from DECK VIEW
 	for id in cards_above:
 		id -= 1
 
+
 func update_card(card_id: int, card: UsableCard):
 	card_collection[card_id] = card 
 
@@ -28,8 +29,11 @@ func get_cards() -> Array[CardWithID]:
 		return cards 
 		
 	# ideally it shouldnt be empty, try to limit at 1 card 
-	# OR when its empty, discard pile drawn
 	return cards
 
 func _generate_card_id(card: UsableCard):
 	return id_counter
+
+
+func clear_deck(): # for restart
+	card_collection = {}

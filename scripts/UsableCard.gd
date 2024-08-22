@@ -5,7 +5,6 @@ signal mouse_exited(card: Card)
 @export var action: Node2D
 @export var thrown: bool = false # implement this later vv, ThrowDescription only shows when true
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.

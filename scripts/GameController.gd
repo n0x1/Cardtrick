@@ -34,9 +34,11 @@ func transition(next_state: GameState):
 	match current_state:
 		GameState.PLAYER_TURN:
 			var player_hand = $"../DeckHand/Hand" as Hand
-			if player_hand.discard_pile.size() > 0:
-				var random_discarded = player_hand.discard_pile.pick_random()
-				player_hand.add_card(random_discarded, "draw from discard")
+			if player_hand.discard_pile.size() > 0 and player_hand.hand.is_empty():
+				player_hand.undiscard()
+			#elif player_hand.discard_pile.size() / player_hand.hand.size() >= 4: # use this for a random approach maybe for now its just all cards once you empty hand
+				#var random_discarded = player_hand.discard_pile.pick_random()
+				#player_hand.add_card(random_discarded, "draw from discard")
 		GameState.ENEMY_TURN:
 			pass
 		GameState.GAMEOVER:

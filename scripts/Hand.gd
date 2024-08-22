@@ -29,16 +29,13 @@ var scale_speed = 17.65
 var raised_z_index = 99  
 
 func add_card(card: Node2D, action):
-	var dupe = card.duplicate()
-	hand.push_back(dupe)
-	add_child(dupe)
-	
-	if action == "draw from discard":
-		var removing_index = discard_pile.find(card)
-		discard_pile.remove_at(removing_index)
-		
-	dupe.mouse_entered.connect(_handle_card_touched)
-	dupe.mouse_exited.connect(_handle_card_untouched)
+
+	if action == "init":
+		var dupe = card.duplicate()
+		hand.push_back(dupe)
+		add_child(dupe)
+		dupe.mouse_entered.connect(_handle_card_touched)
+		dupe.mouse_exited.connect(_handle_card_untouched)
 	reposition_cards()
 	if $StagedLabel.visible == true:
 		$StagedLabel.hide()
@@ -58,9 +55,16 @@ func remove_card(index: int) -> Node2D:
 func discard(index):
 	var discarding_card = hand[index]
 	discard_pile.push_back(discarding_card)
-	remove_child(discarding_card)
+	discarding_card.hide()
 	hand.remove_at(index)
 	unstage_cards()
+	
+func undiscard():
+	for card in discard_pile:
+		card.show()
+		hand.push_back(card)
+	discard_pile.clear()
+	reposition_cards()
 
 func stage_card(index):
 	make_NEM_invisible()

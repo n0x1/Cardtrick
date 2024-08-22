@@ -1,7 +1,6 @@
 @tool
 class_name Character extends Node2D
 
-@export var sprite_texture: CompressedTexture2D
 @export var max_health: int = 15
 @export var health: int = 15
 @export var shield: int = 0
