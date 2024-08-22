@@ -8,14 +8,20 @@ extends Node2D
 const PLAYER_STARTING_MAX_HP = 15
 const LEVEL_LOOPS = 5 #loops until it repeats enemies
 
-var enemy_character_state: int = 0
 var level: int = 0
+
+var n = 1.0 # modualte selected color
+var modulate_inc = true
+
+var enemy_character_state: int = 0
 var enemies := []
+var targeted_enemy_index: int = -1
+
 var ripped_count := 0
 var viewing_win := false
 
 var recovered_card = null
-
+	
 func enemies_all_dead():
 	for enemy in enemies:
 		if enemy.health > 0:
@@ -31,8 +37,8 @@ func _ready(): #level 0
 	$DeckHand.deck = deck
 	set_default_player_deck()
 	enemies.push_back($GameScreen/EnemyCharacter)
-	enemies[0].max_health = enemy_base_health + 90 # just for init and loophole explanation
-	enemies[0].health = enemy_base_health + 90
+	enemies[0].max_health = enemy_base_health #+ 90 # just for init and loophole explanation
+	enemies[0].health = enemy_base_health #+ 90
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -46,6 +52,25 @@ func _process(delta):
 		game_control.transition(GameController.GameState.GAMEOVER)
 	elif enemies_all_dead() == true:
 		game_control.transition(GameController.GameState.VICTORY)
+	
+	#highlight enemy thats targeted
+	var targeted_enemy = enemies[targeted_enemy_index]	
+	
+	if modulate_inc == true and n < 1.38:
+		targeted_enemy.modulate = Color(n,n,n) #n is used for selection display
+		targeted_enemy.scale = Vector2(1+n/10,1+n/10)
+		n += 0.005
+	else:
+		modulate_inc = false
+		targeted_enemy.modulate = Color(n,n,n)
+		targeted_enemy.scale = Vector2(1+n/10,1+n/10)
+		n -= 0.0075
+		if n < 0.99:
+			modulate_inc = true
+
+		
+		
+	
 	
 	if game_control.current_state == GameController.GameState.ENEMY_TURN:
 		#ai logic
@@ -77,10 +102,9 @@ func _process(delta):
 			$CanvasLayer/WinOverlay/RecoverText.set_text("No Cards Thrown")
 		viewing_win = true
 
-		
-		
 	if game_control.current_state == GameController.GameState.GAMEOVER:
 		$CanvasLayer/GameOverOverlay.visible = true
+		
 
 
 
@@ -147,6 +171,7 @@ func _on_button_pressed(): # restart the game
 	recovered_card = null
 	viewing_win = false
 	
+	targeted_enemy_index = 0 
 	enemies.clear()
 	enemies.push_back($GameScreen/EnemyCharacter)
 	
@@ -169,9 +194,12 @@ func set_default_player_deck():
 	($DeckHand/Hand as Hand).hand.clear()
 	($DeckHand.deck as Deck).clear_deck()
 	
-	for n in 2:
-		($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.claymore_sc)
-		($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.kiteshield_sc)
+	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("claymore"))
+	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("claymore").duplicate())
+	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("kiteshield"))
+	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("kiteshield").duplicate())
+	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("blizzard"))
+	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("brassknuckle"))
 
 func _on_deck_button_pressed():
 	if deck_view_overlay.visible == false:
@@ -208,6 +236,7 @@ func _on_button_v_pressed(): #victory button
 	$CanvasLayer/WinOverlay.visible = false
 	$DeckHand/Hand.unstage_cards()
 	level += 1
+	change_enemies(level)
 	ripped_count = 0
 	player_character.mana = player_character.current_mana_cap
 	#increase difficulty
@@ -215,7 +244,33 @@ func _on_button_v_pressed(): #victory button
 	enemy_base_shield += floor(level ) # can divide
 	
 	
-	# transition to next enemy
-	if posmod(level, LEVEL_LOOPS) == 1:
-		pass
+
 	
+func change_enemies(level): # this is for transitinoing between lvls
+	enemies.clear()
+	$GameScreen/EnemyCharacter.hide() #mushroom
+	$GameScreen/GhostCharacter2.hide()
+	$GameScreen/GhostCharacter1.hide()
+	if posmod(level, LEVEL_LOOPS) == 0: #mushroom stage
+		enemies.push_back($GameScreen/EnemyCharacter)
+	elif posmod(level, LEVEL_LOOPS) == 1: # ghosts
+		enemies.push_back($GameScreen/GhostCharacter2)
+		enemies.push_back($GameScreen/GhostCharacter1)
+	
+	reset_enemy_stats()
+	targeted_enemy_index = 0
+
+
+func change_target(dir: String): # this is just for changing in the battle
+	if dir == 'left': # a, w, <-
+		if targeted_enemy_index > 0:
+			targeted_enemy_index -= 1
+		else: # if its 0, go to top index
+			targeted_enemy_index = enemies.size() - 1
+	elif dir == 'right': # d, s, ->
+		if targeted_enemy_index + 1 < enemies.size():
+			targeted_enemy_index += 1
+		else: 
+			targeted_enemy_index = 0
+	else:
+		print("func change_target passed unrecognized arg.")

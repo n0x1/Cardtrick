@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dde0vmmtkx35f" path="res://sprites/Icons/damage_change_sword.png" id="7_y22q8"]
 [ext_resource type="Texture2D" uid="uid://ddvyop1nqm207" path="res://sprites/Icons/bleed.png" id="8_b0jng"]
 [ext_resource type="Texture2D" uid="uid://ct103svanepry" path="res://sprites/Enemies/Mushroom.png" id="9_xtex8"]
-[ext_resource type="Texture2D" uid="uid://1rpokstfdx5e" path="res://sprites/Enemies/Ghost.png" id="10_0fvy3"]
+[ext_resource type="Texture2D" uid="uid://dgstw3fj5hxka" path="res://sprites/Enemies/Ghost.png" id="10_0fvy3"]
 [ext_resource type="PackedScene" uid="uid://cq8thleckxxw8" path="res://scenes/ui/deck_view_window.tscn" id="10_b55e0"]
 [ext_resource type="Texture2D" uid="uid://5prk4i512iqu" path="res://sprites/Icons/deckbutton.png" id="10_o1fi1"]
 [ext_resource type="Texture2D" uid="uid://c0wogc7rilco7" path="res://sprites/deckviewui.png" id="11_cwtun"]

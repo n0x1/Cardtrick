@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/UsableCard.gd" id="1_vdcdn"]
 [ext_resource type="PackedScene" uid="uid://sho53lxaepy6" path="res://scenes/Card.tscn" id="2_k3bvk"]
-[ext_resource type="Texture2D" uid="uid://cxpxbaayw3uuf" path="res://sprites/CardImages/Brassknuckle.png" id="3_gxn2u"]
+[ext_resource type="Texture2D" uid="uid://fow342lh2kpa" path="res://sprites/CardImages/Brassknuckle.png" id="3_gxn2u"]
 [ext_resource type="Script" path="res://scripts/cards/KnuckleActions.gd" id="4_f7c7j"]
 
 [node name="Brassknuckle" type="Node2D" node_paths=PackedStringArray("action")]

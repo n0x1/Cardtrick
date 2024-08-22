@@ -28,14 +28,12 @@ var target_scale = Vector2(1.2, 1.2)
 var scale_speed = 17.65 
 var raised_z_index = 99  
 
-func add_card(card: Node2D, action):
-
-	if action == "init":
-		var dupe = card.duplicate()
-		hand.push_back(dupe)
-		add_child(dupe)
-		dupe.mouse_entered.connect(_handle_card_touched)
-		dupe.mouse_exited.connect(_handle_card_untouched)
+func add_card(card: Node2D):
+	var dupe = card.duplicate()
+	hand.push_back(dupe)
+	add_child(dupe)
+	dupe.mouse_entered.connect(_handle_card_touched)
+	dupe.mouse_exited.connect(_handle_card_untouched)
 	reposition_cards()
 	if $StagedLabel.visible == true:
 		$StagedLabel.hide()

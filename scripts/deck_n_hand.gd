@@ -4,19 +4,27 @@ signal card_activated(card, action: String)
 signal hide_deck_view()
 @export var deck: Deck
 
+var scene_paths = {
+	"claymore": "res://scenes/cards/claymore.tscn",
+	"kiteshield": "res://scenes/cards/shield.tscn",
+	"blizzard": "res://scenes/cards/blizzard.tscn",
+	"brassknuckle": "res://scenes/cards/brassknuckle.tscn"
+}
+var preloaded_scenes = {}
+var instantiated_scenes = {}
 
-@onready var claymore_card_scene: PackedScene = preload("res://scenes/cards/claymore.tscn")
-@onready var kiteshield_card_scene: PackedScene = preload("res://scenes/cards/shield.tscn")
-@onready var blizzard_card_scene: PackedScene = preload("res://scenes/cards/blizzard.tscn")
-@onready var brassknuckle_card_scene: PackedScene = preload("res://scenes/cards/brassknuckle.tscn")
 
-#instantiate all
-@onready var claymore_sc = claymore_card_scene.instantiate()
-@onready var kiteshield_sc = kiteshield_card_scene.instantiate()
+func get_card_scene(name: String):
+	return instantiated_scenes[name]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body
+	for key in scene_paths.keys():
+		preloaded_scenes[key] = load(scene_paths[key])
+
+	# Instantiate all scenes
+	for key in preloaded_scenes.keys():
+		instantiated_scenes[key] = preloaded_scenes[key].instantiate()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -25,15 +33,15 @@ func _process(delta):
 
 func add_to_deckview_and_hand(card):
 	deck.add_card(card)
-	$Hand.add_card(card, "init") # just not so its  draw from discard pile
+	$Hand.add_card(card) # just not so its  draw from discard pile
 
 func _on_button_pressed():
-	add_to_deckview_and_hand(claymore_sc) # only when adding first or throw recover, not if its discarded
+	add_to_deckview_and_hand(get_card_scene("claymore").duplicate()) 
 
 
 
 func _on_button_2_pressed():
-	add_to_deckview_and_hand(kiteshield_sc)
+	add_to_deckview_and_hand(get_card_scene("kiteshield").duplicate())
 
 
 
