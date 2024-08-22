@@ -22,11 +22,15 @@ var viewing_win := false
 
 var recovered_card = null
 	
+var dead_enemies := 0
 func enemies_all_dead():
 	for enemy in enemies:
-		if enemy.health > 0:
-			return false
+		if enemy.health <= 0:
+			dead_enemies += 1
+	if dead_enemies == enemies.size():
 		return true
+	else:
+		return false
 
 var enemy_base_damage: int = 2 # for enemies
 var enemy_base_shield: int = 3
@@ -54,7 +58,7 @@ func _process(delta):
 		game_control.transition(GameController.GameState.VICTORY)
 	
 	#highlight enemy thats targeted
-	var targeted_enemy = enemies[targeted_enemy_index]	
+	var targeted_enemy = enemies[targeted_enemy_index]
 	
 	if modulate_inc == true and n < 1.38:
 		targeted_enemy.modulate = Color(n,n,n) #n is used for selection display
@@ -68,12 +72,8 @@ func _process(delta):
 		if n < 0.99:
 			modulate_inc = true
 
-		
-		
-	
-	
+# enemy attacks
 	if game_control.current_state == GameController.GameState.ENEMY_TURN:
-		#ai logic
 		var enemydamagechange = $GameScreen/EnemyCharacter.damage_change # change this to iterate for multi enemy lvls
 		if posmod(level, LEVEL_LOOPS) == 0: #1 mushroom
 			if enemy_character_state == 0:
@@ -107,14 +107,20 @@ func _process(delta):
 		
 
 
-
-
+func _input(event): #change the enemy thats targeted
+	if event.is_action_pressed("ui_left") or event.is_action_pressed("ui_up") or event.is_action_pressed("keypress_a") or event.is_action_pressed("keypress_w"):  
+		change_target('left')
+	elif event.is_action_pressed("ui_right") or event.is_action_pressed("ui_down") or event.is_action_pressed("keypress_d") or event.is_action_pressed("keypress_s"):  
+		change_target('right')
+		
+		
 func _on_deck_hand_card_activated(staged_index, card: UsableCard, card_cost, action: String):
 	var hand_node = get_node("DeckHand/Hand")
 	if int($ManaAmount.get_text()) - card_cost >= 0:
 		card.activate({
 			"caster": $GameScreen/PlayerCharacter,
-			"targets": [$GameScreen/EnemyCharacter], # change this to an index, or array if all things idk hard this is for debugging
+			"targets": enemies, 
+			"target_index": targeted_enemy_index,
 			"card": card,
 			"action": action
 		})
@@ -148,7 +154,8 @@ func _on_inflict_3_button_pressed():
 func _on_end_turn_pressed():
 	if game_control.current_state == GameController.GameState.PLAYER_TURN:
 		game_control.transition(GameController.GameState.ENEMY_TURN)
-		$GameScreen/EnemyCharacter.start_turn()
+		for enemy in enemies:
+			enemy.start_turn()
 		get_node("DeckHand/Hand").unstage_cards()
 		
 
@@ -174,6 +181,7 @@ func _on_button_pressed(): # restart the game
 	targeted_enemy_index = 0 
 	enemies.clear()
 	enemies.push_back($GameScreen/EnemyCharacter)
+	dead_enemies = 0
 	
 	enemy_base_damage = 2 # this is init, it increases every win
 	enemy_base_shield = 3
@@ -235,6 +243,7 @@ func _on_button_v_pressed(): #victory button
 	viewing_win = false
 	$CanvasLayer/WinOverlay.visible = false
 	$DeckHand/Hand.unstage_cards()
+	$DeckHand/Hand.undiscard()
 	level += 1
 	change_enemies(level)
 	ripped_count = 0
@@ -259,9 +268,15 @@ func change_enemies(level): # this is for transitinoing between lvls
 	
 	reset_enemy_stats()
 	targeted_enemy_index = 0
+	dead_enemies = 0
 
 
 func change_target(dir: String): # this is just for changing in the battle
+	
+	enemies[targeted_enemy_index].scale = Vector2(1,1)
+	n = 1.0
+	modulate_inc = true
+	
 	if dir == 'left': # a, w, <-
 		if targeted_enemy_index > 0:
 			targeted_enemy_index -= 1
@@ -272,5 +287,4 @@ func change_target(dir: String): # this is just for changing in the battle
 			targeted_enemy_index += 1
 		else: 
 			targeted_enemy_index = 0
-	else:
-		print("func change_target passed unrecognized arg.")
+	

@@ -13,7 +13,7 @@ action = NodePath("KnuckleActions")
 position = Vector2(5.74975, -209)
 CardName = "Brass Knuckle"
 PlayDescription = "Deal 3x2 DMG. Weaken target by 1 for each hit"
-ThrowDescription = "Fully break a target's shield"
+ThrowDescription = "Fully break a target's shield. If target has no shield, ..."
 
 [node name="CardImage" type="Sprite2D" parent="."]
 z_index = 5

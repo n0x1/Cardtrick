@@ -87,6 +87,10 @@ func update_healthbar(): # hp bar graphical update only
 		($Healthbar as ProgressBar).value = health
 	if health < 0:
 		health = 0 #(for consistency with visuals)
+	var current_size = $Healthbar.size.y
+	$Healthbar.custom_minimum_size = Vector2(90,24)
+	var max_x = max(max_health * 20, 90)
+	$Healthbar.size = Vector2(max_x, current_size)
 	($"Healthbar/HealthText").set_text(str(health) + "/" + str(max_health))
 
 func update_shield_icon_values():
