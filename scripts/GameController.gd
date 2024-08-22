@@ -1,5 +1,6 @@
 class_name GameController extends Node2D
 
+var is_running := true 
 enum GameState {
 	PLAYER_TURN,
 	ENEMY_TURN,
@@ -9,6 +10,11 @@ enum GameState {
 
 @onready var current_state: GameState = GameState.PLAYER_TURN
  
+func pause():
+	is_running = false
+	
+func resume():
+	is_running = true
 
 func transition(next_state: GameState):
 	#leaving state

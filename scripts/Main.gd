@@ -3,18 +3,24 @@ extends Node2D
 @export var player_character: Character
 
 @onready var game_control: GameController = $GameController
+@onready var deck_view_overlay: DeckViewWindow = $CanvasLayer/DeckViewWindow as DeckViewWindow
 
-var player_deck = [] # array to store players deck
+@onready var deck: Deck = Deck.new()
+
 var enemy_character_state: int = 0
 var level: int = 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	$DeckHand.deck = deck
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if !game_control.is_running:
+		return # stop updates if game paused
+	
+	
 	$ManaAmount.set_text(str($GameScreen/PlayerCharacter.mana))
 	
 	if $GameScreen/PlayerCharacter.health <= 0:
@@ -106,4 +112,6 @@ func _on_victory_button_pressed(): # victory
 
 
 func _on_deck_button_pressed():
-	pass # Replace with function body.
+	(game_control as GameController).pause()
+	deck_view_overlay.visible = true
+	deck_view_overlay.display_card_list(deck.get_cards()) # pass array of list of UsableCard s

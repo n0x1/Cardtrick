@@ -1,4 +1,4 @@
-class_name Deck extends RefCounted
+class_name Deck extends Resource
 
 var card_collection: Dictionary = {}
 
@@ -16,8 +16,15 @@ func update_card(card_id: int, card: UsableCard):
 	card_collection[card_id] = card 
 
 func get_cards() -> Array[CardWithID]:
-	
-	return card_collection.values()
+	var cards: Array[CardWithID] = []
+	if !card_collection.is_empty():
+		for card in card_collection.values():
+			cards.push_back(card as CardWithID)
+		return cards 
+		
+	# ideally it shouldnt be empty, try to limit at 1 card 
+	# OR when its empty, discard pile drawn
+	return cards
 
 func _generate_card_id(card: UsableCard):
 	return id_counter

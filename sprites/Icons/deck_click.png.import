@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dhp03v4vdr3xn"
-path="res://.godot/imported/deck_hover.png-24bbbd306e5cccf6ae1e2cc0dcc17601.ctex"
+uid="uid://dotr7g86h4gyc"
+path="res://.godot/imported/deck_click.png-192bfa8d905a3818d2a2812bdd1a2fbc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/Icons/deck_hover.png"
-dest_files=["res://.godot/imported/deck_hover.png-24bbbd306e5cccf6ae1e2cc0dcc17601.ctex"]
+source_file="res://sprites/Icons/deck_click.png"
+dest_files=["res://.godot/imported/deck_click.png-192bfa8d905a3818d2a2812bdd1a2fbc.ctex"]
 
 [params]
 
