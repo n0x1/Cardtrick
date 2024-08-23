@@ -134,8 +134,8 @@ func _input(event):
 			card_ability("play")
 		if event.is_action_pressed("keypress_k"): #throw K
 			card_ability("throw")
-		if event.is_action_pressed("keypress_l"): #rip L
-			card_ability("rip")
+		#if event.is_action_pressed("keypress_l"): #rip L
+			#card_ability("rip")
 			
 			
 		# card.queue_free() # remove from memory after scaling scale

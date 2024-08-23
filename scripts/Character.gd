@@ -10,7 +10,9 @@ var current_mana_cap: int = 3
 @export var bleeding: bool = false
 var saved_amount: int = 0 # forbleeding
 var saved_turns: int = 0 # forbleeding
+@export var chilly = false
 @export var is_loophole := false
+
 
 func spend_mana(amount: int):
 	if mana - amount >= 0:
@@ -49,7 +51,7 @@ func take_damage(amount: int):
 		if possible_enemy_index >= 0:
 			await $"../PlayerCharacter".wait(0.2)
 			$"../..".enemies.remove_at(possible_enemy_index)
-			$"../..".targeted_enemy_index = -1
+			$"../..".targeted_enemy_index = 0
 		if is_loophole == true: ## LOOPHOLE EFFECT BASED ON LVL
 			if $"../..".level == 0: # first level
 				$"../../Animations/Anvil/AnvilAnim".play("AnvilDrop")
@@ -60,8 +62,16 @@ func take_damage(amount: int):
 				$"../EnemyCharacter".take_damage(90)
 			if $"../..".level == 1:
 				self.show() # fireplace
+				$"Healthbar".hide()
 				$"EnemySprite".set_texture(get_node("Extinguished").texture)
-
+				$"TrapLabel".set_text("Brrr! Any colder and the ghosts might die...")
+				await $"../PlayerCharacter".wait(0.1)
+				$"../GhostCharacter1".take_damage(50)
+				$"../GhostCharacter2".take_damage(50)
+				var ri = $"../..".enemies.find($"../GhostCharacter2")
+				$"../..".enemies.remove_at(ri)
+				$"../GhostCharacter3/Dialogue".show()
+				
 var bleedcount = 0 #init 
 func bleed(amount: int, turns: int):
 	if bleedcount == 0:
@@ -83,7 +93,6 @@ func change_shield(amount: int):
 
 func change_attack(amount: int):
 	damage_change += amount # use negatives to debuff
-	pass
 
 
 
@@ -142,6 +151,8 @@ func _ready():
 func _process(delta):
 	update_healthbar()
 	update_shield_icon_values()
+	if chilly == true:
+		take_damage(1)
 	
 
 func wait(seconds: float) -> void:

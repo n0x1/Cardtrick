@@ -11,10 +11,10 @@ func activate(game_state: Dictionary):
 		if action == "play":
 			play(caster, targets)
 		elif action == "throw":
-			throw(targets)
+			throw(caster, targets)
 		elif action == "rip": # rip combines both effects
 			play(caster, targets)
-			throw(targets)
+
 		else:
 			print("INVALID action passed (??)!!!")
 			return(null)
@@ -24,12 +24,14 @@ func activate(game_state: Dictionary):
 func play(caster, targets):
 	for target in targets:
 		target.take_damage(5 + caster.damage_change)
+		await caster.wait(0.05)
 
-func throw(targets):
+func throw(caster, targets):
 	for target in targets:
 		if target.bleeding != true:
 			target.bleeding = true
 			target.bleed(3, 5)
 		else:
 			target.saved_turns += 5 # just extend otherwise.
+			await caster.wait(0.1)
 			

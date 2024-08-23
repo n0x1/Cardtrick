@@ -5,8 +5,8 @@ extends Node2D
 @onready var deck_view_overlay: DeckViewWindow = $CanvasLayer/DeckViewWindow as DeckViewWindow
 @onready var deck: Deck = Deck.new()
 
-const PLAYER_STARTING_MAX_HP = 15
-const LEVEL_LOOPS = 5 #loops until it repeats enemies
+const PLAYER_STARTING_MAX_HP = 25
+const LEVEL_LOOPS = 3 #loops until it repeats enemies
 
 var level: int = 0
 
@@ -15,7 +15,7 @@ var modulate_inc = true
 
 var enemy_character_state: int = 0
 var enemies := []
-var targeted_enemy_index: int = -1
+var targeted_enemy_index: int = 1
 
 var ripped_count := 0
 var viewing_win := false
@@ -39,7 +39,7 @@ func _ready(): #level 0
 func _process(delta):
 	if !game_control.is_running:
 		return # stop updates if game paused
-	
+	print(enemies)
 	
 	$ManaAmount.set_text(str($GameScreen/PlayerCharacter.mana))
 	
@@ -51,7 +51,7 @@ func _process(delta):
 	#highlight enemy thats targeted
 	if targeted_enemy_index >= 0 and targeted_enemy_index < enemies.size():
 		var targeted_enemy = enemies[targeted_enemy_index]
-
+	
 		if modulate_inc == true and n < 1.38:
 			targeted_enemy.modulate = Color(n,n,n) #n is used for selection display
 			targeted_enemy.scale = Vector2(1+n/10,1+n/10)
@@ -74,17 +74,17 @@ func _process(delta):
 				player_character.take_damage(enemy_base_damage + enemydamagechange)
 			elif enemy_character_state == 2:
 				player_character.take_damage(2 + enemy_base_damage + enemydamagechange)
-		if posmod(level, LEVEL_LOOPS) == 1: # ghosts
+		elif posmod(level, LEVEL_LOOPS) == 1: # ghosts
 			if enemy_character_state == 0:
-				for enemy in enemies:
-					enemy.change_shield(enemy_base_shield)
+				$GameScreen/GhostCharacter3.change_shield(enemy_base_shield)
+				$GameScreen/GhostCharacter2.change_shield(enemy_base_shield)
+				$GameScreen/GhostCharacter1.change_shield(enemy_base_shield)
 			elif enemy_character_state == 1:
-				for enemy in enemies:
-					enemy.change_attack(2)
+				$GameScreen/GhostCharacter3.change_attack(3)
 			elif enemy_character_state == 2:
-				for enemy in enemies:
-					player_character.take_damage(enemy_base_damage + enemy.damage_change)
-					await player_character.wait(0.25)
+				player_character.take_damage(enemy_base_damage + $GameScreen/GhostCharacter3.damage_change)
+				await player_character.wait(0.5)
+				player_character.take_damage(1)
 				
 		enemy_character_state = posmod(enemy_character_state + 1, 3) # % but +
 		game_control.transition(GameController.GameState.PLAYER_TURN)
@@ -92,8 +92,12 @@ func _process(delta):
 		
 	if game_control.current_state == GameController.GameState.VICTORY and viewing_win == false:
 		$CanvasLayer/WinOverlay.visible = true
-		
-		$CanvasLayer/WinOverlay/RippedText.set_text("Ripped: " + str(ripped_count))
+		if posmod(level, LEVEL_LOOPS) == 0:
+			$CanvasLayer/WinOverlay/LearnedText.set_text('Received Blizzard!')
+		elif posmod(level, LEVEL_LOOPS) == 1:
+			$CanvasLayer/WinOverlay/LearnedText.set_text('Received Sledgehammer!')
+		elif posmod(level, LEVEL_LOOPS) == 2:
+			$CanvasLayer/WinOverlay/LearnedText.set_text('There is no way out from here...')
 		
 		var recoverable_thrown_cs = ($DeckHand/Hand as Hand).recoverable_thrown_cards
 		if !recoverable_thrown_cs.is_empty():
@@ -117,7 +121,7 @@ func _input(event): #change the enemy thats targeted
 		
 func _on_deck_hand_card_activated(staged_index, card: UsableCard, card_cost, action: String):
 	var hand_node = get_node("DeckHand/Hand")
-	if int($ManaAmount.get_text()) - card_cost >= 0:
+	if int($ManaAmount.get_text()) - card_cost >= 0 and targeted_enemy_index > -1:
 		card.activate({
 			"caster": $GameScreen/PlayerCharacter,
 			"targets": enemies, 
@@ -134,6 +138,8 @@ func _on_deck_hand_card_activated(staged_index, card: UsableCard, card_cost, act
 			$DeckHand/Hand.remove_card(staged_index)
 			ripped_count += 1
 		hand_node.make_NEM_invisible()
+	elif targeted_enemy_index <= -1:
+		targeted_enemy_index = 0
 	else:
 		hand_node.unstage_cards()
 		hand_node.show_NEM()
@@ -199,6 +205,7 @@ func reset_enemy_stats():
 		enemy.damage_change = 0
 		enemy.bleeding = false
 		enemy.show()
+	enemy_character_state = 0
 	
 func set_default_player_deck():
 	($DeckHand/Hand as Hand).hand.clear()
@@ -263,23 +270,29 @@ func change_enemies(level): # this is for transitinoing between lvls
 	$GameScreen/EnemyCharacter.hide() #mushroom
 	$GameScreen/GhostCharacter2.hide()
 	$GameScreen/GhostCharacter1.hide()
+	$GameScreen/GhostCharacter3.hide()
 	$GameScreen/LoopholeSwitch.hide()
 	$GameScreen/FireplaceLoophole.hide()
 	if posmod(level, LEVEL_LOOPS) == 0: #mushroom stage anvil
 		enemies.push_back($GameScreen/EnemyCharacter)
 		enemies.push_back($GameScreen/LoopholeSwitch)
 	elif posmod(level, LEVEL_LOOPS) == 1: # ghosts fireplace
-		enemies.push_back($GameScreen/GhostCharacter2)
 		enemies.push_back($GameScreen/GhostCharacter1)
+		enemies.push_back($GameScreen/GhostCharacter3)
+		enemies.push_back($GameScreen/GhostCharacter2)
 		enemies.push_back($GameScreen/FireplaceLoophole)
-	
+		($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("blizzard"))
+	elif posmod(level, LEVEL_LOOPS) == 2:
+		pass
+		#enemies.push_back($GameScreen/FloorLoophole)
+		#reaper
+		#skeleton
 	reset_enemy_stats() # this shows them
 	targeted_enemy_index = 0
 
 
 
 func change_target(dir: String): # this is just for changing in the battle
-	
 	enemies[targeted_enemy_index].scale = Vector2(1,1)
 	n = 1.0
 	modulate_inc = true
