@@ -2,7 +2,7 @@
 
 # About:
 
-You find yourself trapped in a mysterious manor, where the only way to escape is by defeating opponents in a series of magical card games. But as you battle, you discover a crucial loophole: you can not only play cards, but you can throw them! Throwing deals a stronger effect, but it is removed for the battle and may not be recovered. Strategically play, throw, and interact with the environment to outwit your opponents and find your way to freedom. Otherwise, you may loop around the manor forever... 
+You find yourself trapped in a mysterious manor, where the only way to escape is by defeating opponents in a series of magical card games. But as you battle, you discover a crucial loophole: you can not only play cards, but you can throw them! Throwing deals a stronger effect, but it is removed for the battle and may not be recovered. Strategically play, throw, and find more loopholes within the environment to outwit your opponents and find your way to freedom. Otherwise, you may loop around the manor forever... 
 
 # Controls:
 Left/A/W: Cycle left through enemies
