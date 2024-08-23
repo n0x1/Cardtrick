@@ -31,10 +31,9 @@ var enemy_base_health := 10
 func _ready(): #level 0
 	$DeckHand.deck = deck
 	set_default_player_deck()
-	enemies.push_back($GameScreen/EnemyCharacter)
-	enemies[0].max_health = enemy_base_health + 90 # just for init and loophole explanation
-	enemies[0].health = enemy_base_health + 90
-	enemies.push_back($GameScreen/LoopholeSwitch)
+	
+	change_enemies(level) # is 0	
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -50,7 +49,7 @@ func _process(delta):
 		game_control.transition(GameController.GameState.VICTORY)
 	
 	#highlight enemy thats targeted
-	if enemies.size() > 0:
+	if targeted_enemy_index >= 0 and targeted_enemy_index < enemies.size():
 		var targeted_enemy = enemies[targeted_enemy_index]
 
 		if modulate_inc == true and n < 1.38:
@@ -205,12 +204,13 @@ func set_default_player_deck():
 	($DeckHand/Hand as Hand).hand.clear()
 	($DeckHand.deck as Deck).clear_deck()
 	
-	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("claymore"))
+	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("claymore")) #could be a function ubt duplicates are annoying
 	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("claymore").duplicate())
 	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("kiteshield"))
 	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("kiteshield").duplicate())
-	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("blizzard"))
-	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("brassknuckle"))
+	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("healthpotion"))
+	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("cookie"))
+	
 
 func _on_deck_button_pressed():
 	if deck_view_overlay.visible == false:
@@ -264,12 +264,14 @@ func change_enemies(level): # this is for transitinoing between lvls
 	$GameScreen/GhostCharacter2.hide()
 	$GameScreen/GhostCharacter1.hide()
 	$GameScreen/LoopholeSwitch.hide()
-	if posmod(level, LEVEL_LOOPS) == 0: #mushroom stage
+	$GameScreen/FireplaceLoophole.hide()
+	if posmod(level, LEVEL_LOOPS) == 0: #mushroom stage anvil
 		enemies.push_back($GameScreen/EnemyCharacter)
 		enemies.push_back($GameScreen/LoopholeSwitch)
-	elif posmod(level, LEVEL_LOOPS) == 1: # ghosts
+	elif posmod(level, LEVEL_LOOPS) == 1: # ghosts fireplace
 		enemies.push_back($GameScreen/GhostCharacter2)
 		enemies.push_back($GameScreen/GhostCharacter1)
+		enemies.push_back($GameScreen/FireplaceLoophole)
 	
 	reset_enemy_stats() # this shows them
 	targeted_enemy_index = 0

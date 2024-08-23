@@ -106,6 +106,6 @@ func _on_area_2d_mouse_exited():
 
 func _on_area_2d_input_event(viewport, event, shape_idx):
 	if event.is_action_pressed("mouse_click"):
-	
+
 		thrown_cards_descs.push_back(ThrowDescription) # proib nt the best way so change
 	

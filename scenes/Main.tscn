@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://cg841d3cpmpjd"]
+[gd_scene load_steps=23 format=3 uid="uid://cg841d3cpmpjd"]
 
 [ext_resource type="PackedScene" uid="uid://bnj8i1ngctqf2" path="res://scenes/deck_n_hand.tscn" id="1_vfrus"]
 [ext_resource type="Script" path="res://scripts/Main.gd" id="1_wrmrq"]
@@ -17,6 +17,8 @@
 [ext_resource type="Texture2D" uid="uid://bq75cvad3qsvh" path="res://sprites/Icons/button.png" id="11_jnk86"]
 [ext_resource type="Texture2D" uid="uid://ct0iq5rgs1l27" path="res://sprites/Icons/deck_open.png" id="11_yg7ln"]
 [ext_resource type="Texture2D" uid="uid://dotr7g86h4gyc" path="res://sprites/Icons/deck_click.png" id="12_fyua0"]
+[ext_resource type="Texture2D" uid="uid://d3w84k8xn27wd" path="res://sprites/animation_frames/fireplace_lit.png" id="13_tse8i"]
+[ext_resource type="Texture2D" uid="uid://cu6e5qmf56w4h" path="res://sprites/animation_frames/fireplace_empty.png" id="14_afh1a"]
 
 [sub_resource type="Animation" id="Animation_mornk"]
 resource_name = "AnvilDrop"
@@ -187,6 +189,7 @@ horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="EnemyCharacter" type="Node2D" parent="GameScreen"]
+visible = false
 position = Vector2(1562, 709)
 script = ExtResource("2_4j42c")
 max_health = 100
@@ -275,7 +278,6 @@ horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="GhostCharacter1" type="Node2D" parent="GameScreen"]
-visible = false
 position = Vector2(1750, 756)
 script = ExtResource("2_4j42c")
 max_health = 10
@@ -366,7 +368,6 @@ horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="GhostCharacter2" type="Node2D" parent="GameScreen"]
-visible = false
 position = Vector2(1459, 314)
 script = ExtResource("2_4j42c")
 max_health = 10
@@ -456,6 +457,7 @@ horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="LoopholeSwitch" type="Node2D" parent="GameScreen"]
+visible = false
 position = Vector2(1556, 162)
 script = ExtResource("2_4j42c")
 max_health = 1
@@ -477,8 +479,8 @@ offset_right = 32.0
 offset_bottom = 25.0
 grow_horizontal = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_70d4t")
-max_value = 10.0
-value = 10.0
+max_value = 1.0
+value = 1.0
 show_percentage = false
 
 [node name="HealthText" type="Label" parent="GameScreen/LoopholeSwitch/Healthbar"]
@@ -489,7 +491,7 @@ anchor_right = 0.774648
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "10/10"
+text = "1/1"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
@@ -556,12 +558,126 @@ horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="TrapLabel" type="Label" parent="GameScreen/LoopholeSwitch"]
-offset_left = 104.0
-offset_top = 20.0
-offset_right = 323.0
-offset_bottom = 40.0
+offset_left = 47.0
+offset_top = 15.0
+offset_right = 378.0
+offset_bottom = 45.0
 rotation = 0.249582
+theme_override_font_sizes/font_size = 24
 text = "Use the dungeon trap against the enemy!"
+
+[node name="FireplaceLoophole" type="Node2D" parent="GameScreen"]
+position = Vector2(2124, -19)
+script = ExtResource("2_4j42c")
+max_health = 5
+health = 5
+is_loophole = true
+
+[node name="EnemySprite" type="Sprite2D" parent="GameScreen/FireplaceLoophole"]
+position = Vector2(-158, 190)
+scale = Vector2(4.2, 4.2)
+texture = ExtResource("13_tse8i")
+
+[node name="Healthbar" type="ProgressBar" parent="GameScreen/FireplaceLoophole"]
+anchors_preset = -1
+anchor_right = 0.5
+offset_left = -197.0
+offset_top = 229.0
+offset_right = -126.0
+offset_bottom = 253.0
+grow_horizontal = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_70d4t")
+max_value = 5.0
+value = 5.0
+show_percentage = false
+
+[node name="HealthText" type="Label" parent="GameScreen/FireplaceLoophole/Healthbar"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.169014
+anchor_right = 0.774648
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "5/5"
+horizontal_alignment = 1
+
+[node name="Shield" type="Sprite2D" parent="GameScreen/FireplaceLoophole"]
+visible = false
+position = Vector2(-27, -30)
+scale = Vector2(1.15625, 1.125)
+texture = ExtResource("5_4i1j7")
+
+[node name="ShieldNum" type="Label" parent="GameScreen/FireplaceLoophole/Shield"]
+offset_left = -73.5135
+offset_top = -19.5555
+offset_right = -14.5135
+offset_bottom = 29.4445
+theme_override_font_sizes/font_size = 40
+text = "0"
+horizontal_alignment = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="AttackChange" type="Sprite2D" parent="GameScreen/FireplaceLoophole"]
+visible = false
+position = Vector2(65, 30)
+scale = Vector2(0.71875, 0.734375)
+texture = ExtResource("7_y22q8")
+
+[node name="AttackChgNum" type="Label" parent="GameScreen/FireplaceLoophole/AttackChange"]
+anchors_preset = -1
+anchor_left = 0.000679672
+anchor_top = -0.00631562
+anchor_right = 0.000679702
+anchor_bottom = -0.00631562
+offset_left = -57.0435
+offset_top = -28.5958
+offset_right = -21.0435
+offset_bottom = 20.4042
+theme_override_font_sizes/font_size = 40
+text = "0"
+horizontal_alignment = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Bleeding" type="Sprite2D" parent="GameScreen/FireplaceLoophole"]
+visible = false
+position = Vector2(67, -30)
+scale = Vector2(0.687501, 0.8125)
+texture = ExtResource("8_b0jng")
+
+[node name="BleedingLabel" type="Label" parent="GameScreen/FireplaceLoophole/Bleeding"]
+offset_left = -49.0
+offset_top = -16.0
+offset_right = -17.0
+offset_bottom = 21.0
+theme_override_font_sizes/font_size = 30
+horizontal_alignment = 2
+justification_flags = 162
+metadata/_edit_use_anchors_ = true
+
+[node name="TurnLabel" type="Label" parent="GameScreen/FireplaceLoophole/Bleeding"]
+offset_left = -5.81818
+offset_top = -12.3077
+offset_right = 8.18182
+offset_bottom = 24.6923
+theme_override_font_sizes/font_size = 30
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="TrapLabel" type="Label" parent="GameScreen/FireplaceLoophole"]
+offset_left = -39.0
+offset_top = 42.0
+offset_right = 292.0
+offset_bottom = 72.0
+rotation = 0.249582
+theme_override_font_sizes/font_size = 24
+text = "It's warm in here...
+"
+
+[node name="Extinguished" type="Sprite2D" parent="GameScreen/FireplaceLoophole"]
+z_index = -1
+position = Vector2(-161, -371)
+texture = ExtResource("14_afh1a")
 
 [node name="ManaAmount" type="Label" parent="."]
 offset_left = 198.0

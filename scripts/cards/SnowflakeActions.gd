@@ -1,5 +1,5 @@
 extends Node2D
-
+ #this is blizzard
 func activate(game_state: Dictionary):
 	#spend mana/cost
 	var caster = game_state.get("caster")
@@ -9,11 +9,11 @@ func activate(game_state: Dictionary):
 	if caster.spend_mana(3) == true: 
 		caster.play_sound("res://sounds/blizzard.mp3", 1)
 		if action == "play":
-			play(targets)
+			play(caster, targets)
 		elif action == "throw":
 			throw(targets)
 		elif action == "rip": # rip combines both effects
-			play(targets)
+			play(caster, targets)
 			throw(targets)
 		else:
 			print("INVALID action passed (??)!!!")
@@ -21,9 +21,9 @@ func activate(game_state: Dictionary):
 		
 		
 
-func play(targets):
+func play(caster, targets):
 	for target in targets:
-		target.take_damage(5)
+		target.take_damage(5 + caster.damage_change)
 
 func throw(targets):
 	for target in targets:

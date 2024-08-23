@@ -42,3 +42,7 @@ func get_card_name():
 
 func get_card_cost() -> int:
 	return int($Card.CardCost)
+
+
+func _on_mouse_entered(card):
+	pass # Replace with function body.

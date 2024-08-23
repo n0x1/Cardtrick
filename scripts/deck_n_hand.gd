@@ -8,7 +8,9 @@ var scene_paths = {
 	"claymore": "res://scenes/cards/claymore.tscn",
 	"kiteshield": "res://scenes/cards/shield.tscn",
 	"blizzard": "res://scenes/cards/blizzard.tscn",
-	"brassknuckle": "res://scenes/cards/brassknuckle.tscn"
+	"brassknuckle": "res://scenes/cards/brassknuckle.tscn", 
+	"healthpotion": "res://scenes/cards/healthpotion.tscn",
+	"cookie": "res://scenes/cards/cookie.tscn"
 }
 var preloaded_scenes = {}
 var instantiated_scenes = {}

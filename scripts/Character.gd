@@ -49,15 +49,18 @@ func take_damage(amount: int):
 		if possible_enemy_index >= 0:
 			await $"../PlayerCharacter".wait(0.2)
 			$"../..".enemies.remove_at(possible_enemy_index)
+			$"../..".targeted_enemy_index = -1
 		if is_loophole == true: ## LOOPHOLE EFFECT BASED ON LVL
 			if $"../..".level == 0: # first level
-
 				$"../../Animations/Anvil/AnvilAnim".play("AnvilDrop")
 				$"../PlayerCharacter".play_sound('res://sounds/armorup.mp3', 1.5)
 		
 				await $"../PlayerCharacter".wait(0.7)
 				$"../PlayerCharacter".play_sound('res://sounds/steel.mp3', 1)
 				$"../EnemyCharacter".take_damage(90)
+			if $"../..".level == 1:
+				self.show() # fireplace
+				$"EnemySprite".set_texture(get_node("Extinguished").texture)
 
 var bleedcount = 0 #init 
 func bleed(amount: int, turns: int):
