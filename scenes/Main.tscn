@@ -70,6 +70,15 @@ corner_radius_bottom_left = 4
 position = Vector2(-81, -3)
 script = ExtResource("1_wrmrq")
 
+[node name="Background" type="TextureRect" parent="."]
+z_index = -99
+z_as_relative = false
+offset_right = 2243.0
+offset_bottom = 1575.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("25_4rnlr")
+
 [node name="GameController" type="Node2D" parent="."]
 position = Vector2(-207, 14)
 script = ExtResource("2_hmnxx")
@@ -881,6 +890,7 @@ horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Reaper" type="Node2D" parent="GameScreen"]
+visible = false
 position = Vector2(1807, 376)
 script = ExtResource("2_4j42c")
 max_health = 35
@@ -1084,7 +1094,7 @@ offset_left = 198.0
 offset_top = 45.0
 offset_right = 272.0
 offset_bottom = 166.0
-theme_override_font_sizes/font_size = 100
+theme_override_font_sizes/font_size = 150
 text = "10"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
@@ -1106,6 +1116,7 @@ offset_bottom = 215.0
 text = "Inflict 3 damage"
 
 [node name="EndTurn" type="Button" parent="."]
+z_index = 1
 offset_left = 986.0
 offset_top = 49.0
 offset_right = 1159.0
@@ -1216,22 +1227,16 @@ offset_top = -600.0
 offset_bottom = 402.0
 
 [node name="DeckButton" type="TextureButton" parent="."]
+z_index = 444
+z_as_relative = false
 offset_left = 198.0
-offset_top = 1382.0
-offset_right = 292.0
+offset_top = 1313.0
+offset_right = 360.0
 offset_bottom = 1478.0
 texture_normal = ExtResource("10_o1fi1")
 texture_pressed = ExtResource("12_fyua0")
 texture_hover = ExtResource("11_yg7ln")
 stretch_mode = 0
-
-[node name="TextureRect" type="TextureRect" parent="."]
-z_index = -4
-offset_right = 2243.0
-offset_bottom = 1575.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource("25_4rnlr")
 
 [connection signal="card_activated" from="DeckHand" to="." method="_on_deck_hand_card_activated"]
 [connection signal="hide_deck_view" from="DeckHand" to="." method="_on_deck_hand_hide_deck_view"]

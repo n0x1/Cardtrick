@@ -124,6 +124,8 @@ func _input(event): #change the enemy thats targeted
 		change_target('left')
 	elif event.is_action_pressed("ui_right") or event.is_action_pressed("ui_down") or event.is_action_pressed("keypress_d") or event.is_action_pressed("keypress_s"):  
 		change_target('right')
+	elif event.is_action_pressed("keypress_e"): # end turn
+		end_player_turn()
 		
 		
 func _on_deck_hand_card_activated(staged_index, card: UsableCard, card_cost, action: String):
@@ -166,13 +168,15 @@ func _on_inflict_3_button_pressed():
 
 
 func _on_end_turn_pressed():
+	end_player_turn()
+	
+		
+func end_player_turn():
 	if game_control.current_state == GameController.GameState.PLAYER_TURN:
 		game_control.transition(GameController.GameState.ENEMY_TURN)
 		for enemy in enemies:
 			enemy.start_turn()
 		get_node("DeckHand/Hand").unstage_cards()
-		
-
 
 func _on_button_pressed(): # restart the game
 	game_control.current_state = GameController.GameState.PLAYER_TURN
