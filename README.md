@@ -13,4 +13,5 @@ While card staged, J: play card
 While card staged, K: throw card
 View deck: left click purple button
 
+# Play at: https://n0x1.itch.io/cardtrick
 >Made in Godot 4, all assets designed by noxi with some fair use sounds
