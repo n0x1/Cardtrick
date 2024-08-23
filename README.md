@@ -14,7 +14,8 @@ While card staged, K: throw card
 View deck: left click purple button
 
 # Play at: https://n0x1.itch.io/cardtrick
-<img width="961" alt="Screenshot 2024-08-23 at 2 55 14 AM" src="https://github.com/user-attachments/assets/a6b15fff-c994-416b-8e3c-5845052e7af7">
+<img width="824" alt="Screenshot 2024-08-23 at 2 55 14 AM" src="https://github.com/user-attachments/assets/a6b15fff-c994-416b-8e3c-5845052e7af7">
+
 *Defeat the ghosts with a crucial, fiery loophole*
 
 >Made in Godot 4, all assets designed by noxi with some fair use sounds
