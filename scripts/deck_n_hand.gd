@@ -10,7 +10,8 @@ var scene_paths = {
 	"blizzard": "res://scenes/cards/blizzard.tscn",
 	"brassknuckle": "res://scenes/cards/brassknuckle.tscn", 
 	"healthpotion": "res://scenes/cards/healthpotion.tscn",
-	"cookie": "res://scenes/cards/cookie.tscn"
+	"cookie": "res://scenes/cards/cookie.tscn",
+	"sledgehammer": "res://scenes/cards/sledgehammer.tscn"
 }
 var preloaded_scenes = {}
 var instantiated_scenes = {}
@@ -37,6 +38,10 @@ func add_to_deckview_and_hand(card):
 	deck.add_card(card)
 	$Hand.add_card(card) # just not so its  draw from discard pile
 
+func clear_deck_view():
+	deck.clear_deck()
+
+
 func _on_button_pressed():
 	add_to_deckview_and_hand(get_card_scene("claymore").duplicate()) 
 
@@ -61,3 +66,4 @@ func _on_hand_card_activated(staged_index, card, card_cost, action): # bring up 
 
 func _on_hand_hide_deck_view():
 	hide_deck_view.emit()
+

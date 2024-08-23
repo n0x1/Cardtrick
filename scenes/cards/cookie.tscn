@@ -12,7 +12,7 @@ action = NodePath("CookieActions")
 [node name="Card" parent="." instance=ExtResource("2_g8cu3")]
 position = Vector2(5.75, -209)
 CardName = "Cookie"
-PlayDescription = "Increase attack by 3 DMG"
+PlayDescription = "Increase attack by 2 DMG"
 ThrowDescription = "Double any player attack boost"
 CardCost = 1
 

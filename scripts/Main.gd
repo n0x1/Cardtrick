@@ -39,7 +39,6 @@ func _ready(): #level 0
 func _process(delta):
 	if !game_control.is_running:
 		return # stop updates if game paused
-	print(enemies)
 	
 	$ManaAmount.set_text(str($GameScreen/PlayerCharacter.mana))
 	
@@ -80,11 +79,19 @@ func _process(delta):
 				$GameScreen/GhostCharacter2.change_shield(enemy_base_shield)
 				$GameScreen/GhostCharacter1.change_shield(enemy_base_shield)
 			elif enemy_character_state == 1:
+				$GameScreen/PlayerCharacter.take_damage(3)
 				$GameScreen/GhostCharacter3.change_attack(3)
 			elif enemy_character_state == 2:
 				player_character.take_damage(enemy_base_damage + $GameScreen/GhostCharacter3.damage_change)
-				await player_character.wait(0.5)
-				player_character.take_damage(1)
+		elif posmod(level, LEVEL_LOOPS) == 2: # reaper skeleton
+			if enemy_character_state == 0:
+				$GameScreen/Reaper.change_attack(5)
+				$GameScreen/Skeleton.change_shield(9)
+			elif enemy_character_state == 1:
+				$GameScreen/PlayerCharacter.bleeding = true
+				$GameScreen/PlayerCharacter.bleed(2,2)
+			elif enemy_character_state == 2:
+				player_character.take_damage($GameScreen/Reaper.damage_change)
 				
 		enemy_character_state = posmod(enemy_character_state + 1, 3) # % but +
 		game_control.transition(GameController.GameState.PLAYER_TURN)
@@ -93,11 +100,11 @@ func _process(delta):
 	if game_control.current_state == GameController.GameState.VICTORY and viewing_win == false:
 		$CanvasLayer/WinOverlay.visible = true
 		if posmod(level, LEVEL_LOOPS) == 0:
-			$CanvasLayer/WinOverlay/LearnedText.set_text('Received Blizzard!')
+			$CanvasLayer/WinOverlay/LearnedText.set_text('Unlocked Blizzard!')
 		elif posmod(level, LEVEL_LOOPS) == 1:
-			$CanvasLayer/WinOverlay/LearnedText.set_text('Received Sledgehammer!')
+			$CanvasLayer/WinOverlay/LearnedText.set_text('Unlocked Sledgehammer!')
 		elif posmod(level, LEVEL_LOOPS) == 2:
-			$CanvasLayer/WinOverlay/LearnedText.set_text('There is no way out from here...')
+			$CanvasLayer/WinOverlay/LearnedText.set_text('Unlocked Brass Knuckles! You have gone in a circle...')
 		
 		var recoverable_thrown_cs = ($DeckHand/Hand as Hand).recoverable_thrown_cards
 		if !recoverable_thrown_cs.is_empty():
@@ -186,10 +193,9 @@ func _on_button_pressed(): # restart the game
 	viewing_win = false
 	
 	targeted_enemy_index = 0 
-	enemies.clear()
-	enemies.push_back($GameScreen/EnemyCharacter)
-	enemies.push_back($GameScreen/LoopholeSwitch)
-
+	
+	change_enemies(level) #0
+	
 	
 	enemy_base_damage = 2 # this is init, it increases every win
 	enemy_base_shield = 3
@@ -197,26 +203,32 @@ func _on_button_pressed(): # restart the game
 	enemies[0].max_health = enemy_base_health + 90 # health is handled here because its the first mushroom
 	enemies[0].health = enemy_base_health + 90
 	reset_enemy_stats()
+	
+	# clear deck
+	($DeckHand as DeckNHand).clear_deck_view()
+	$DeckHand/Hand.hand.clear()
+	set_default_player_deck()
+	
 
 
 func reset_enemy_stats(): 
-	for enemy in enemies:
-		enemy.shield = 0
-		enemy.damage_change = 0
-		enemy.bleeding = false
-		enemy.show()
+	if enemies.size() > 0:
+		for enemy in enemies:
+			enemy.shield = 0
+			enemy.damage_change = 0
+			enemy.bleeding = false
+			enemy.show()
 	enemy_character_state = 0
 	
 func set_default_player_deck():
 	($DeckHand/Hand as Hand).hand.clear()
 	($DeckHand.deck as Deck).clear_deck()
 	
-	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("claymore")) #could be a function ubt duplicates are annoying
-	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("claymore").duplicate())
-	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("kiteshield"))
-	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("kiteshield").duplicate())
-	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("healthpotion"))
-	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("cookie"))
+	for n in 2:
+		($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("claymore").duplicate())
+		($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("kiteshield").duplicate())
+	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("healthpotion").duplicate())
+	($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("cookie").duplicate())
 	
 
 func _on_deck_button_pressed():
@@ -248,15 +260,14 @@ func _on_button_v_pressed(): #victory button
 	game_control.current_state = GameController.GameState.PLAYER_TURN
 	if ($DeckHand/Hand as Hand).recoverable_thrown_cards.is_empty() == false:
 		($DeckHand as DeckNHand).add_to_deckview_and_hand(recovered_card)
-	enemies.clear()
 	
 	viewing_win = false
 	$CanvasLayer/WinOverlay.visible = false
 	$DeckHand/Hand.unstage_cards()
 	$DeckHand/Hand.undiscard()
 	level += 1
+	enemies.clear()
 	change_enemies(level)
-	ripped_count = 0
 	player_character.mana = player_character.current_mana_cap
 	#increase difficulty
 	enemy_base_damage += floor(level)#  it increases every win
@@ -268,25 +279,46 @@ func _on_button_v_pressed(): #victory button
 func change_enemies(level): # this is for transitinoing between lvls
 	enemies.clear()
 	$GameScreen/EnemyCharacter.hide() #mushroom
+	$GameScreen/EnemyCharacter.health = $GameScreen/EnemyCharacter.max_health
 	$GameScreen/GhostCharacter2.hide()
+	$GameScreen/GhostCharacter2.health = $GameScreen/GhostCharacter2.max_health
 	$GameScreen/GhostCharacter1.hide()
+	$GameScreen/GhostCharacter1.health = $GameScreen/GhostCharacter1.max_health
 	$GameScreen/GhostCharacter3.hide()
+	$GameScreen/GhostCharacter3.health = $GameScreen/GhostCharacter3.max_health
 	$GameScreen/LoopholeSwitch.hide()
+	$GameScreen/LoopholeSwitch.health = 1
 	$GameScreen/FireplaceLoophole.hide()
+	$GameScreen/FireplaceLoophole.health = 5
+	$GameScreen/FireplaceLoophole/EnemySprite.set_texture($GameScreen/FireplaceLoophole/Lit.texture)
+	$GameScreen/FireplaceLoophole/Healthbar.show()
+	$GameScreen/Skeleton.hide()
+	$GameScreen/Skeleton.health = $GameScreen/Skeleton.max_health
+	$GameScreen/Reaper.hide()
+	$GameScreen/Reaper.health = $GameScreen/Reaper.max_health
+	$GameScreen/FloorboardLoophole.hide()
+	$GameScreen/FloorboardLoophole.health = 40
+	$GameScreen/FloorboardLoophole/EnemySprite.set_texture($GameScreen/FloorboardLoophole/Closed.texture)
+	$GameScreen/FloorboardLoophole/Healthbar.show()
+	
 	if posmod(level, LEVEL_LOOPS) == 0: #mushroom stage anvil
 		enemies.push_back($GameScreen/EnemyCharacter)
 		enemies.push_back($GameScreen/LoopholeSwitch)
+		if level > 1:
+			($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("brassknuckle").duplicate())
 	elif posmod(level, LEVEL_LOOPS) == 1: # ghosts fireplace
 		enemies.push_back($GameScreen/GhostCharacter1)
 		enemies.push_back($GameScreen/GhostCharacter3)
 		enemies.push_back($GameScreen/GhostCharacter2)
 		enemies.push_back($GameScreen/FireplaceLoophole)
-		($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("blizzard"))
+		($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("blizzard").duplicate())
 	elif posmod(level, LEVEL_LOOPS) == 2:
-		pass
-		#enemies.push_back($GameScreen/FloorLoophole)
-		#reaper
-		#skeleton
+		enemies.push_back($GameScreen/Reaper)
+		enemies.push_back($GameScreen/Skeleton)
+		enemies.push_back($GameScreen/FloorboardLoophole)
+		($DeckHand as DeckNHand).add_to_deckview_and_hand($DeckHand.get_card_scene("sledgehammer").duplicate())
+		
+		
 	reset_enemy_stats() # this shows them
 	targeted_enemy_index = 0
 

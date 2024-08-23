@@ -10,7 +10,6 @@ var current_mana_cap: int = 3
 @export var bleeding: bool = false
 var saved_amount: int = 0 # forbleeding
 var saved_turns: int = 0 # forbleeding
-@export var chilly = false
 @export var is_loophole := false
 
 
@@ -53,14 +52,14 @@ func take_damage(amount: int):
 			$"../..".enemies.remove_at(possible_enemy_index)
 			$"../..".targeted_enemy_index = 0
 		if is_loophole == true: ## LOOPHOLE EFFECT BASED ON LVL
-			if $"../..".level == 0: # first level
+			if posmod($"../..".level, 3) == 0: # first level
 				$"../../Animations/Anvil/AnvilAnim".play("AnvilDrop")
 				$"../PlayerCharacter".play_sound('res://sounds/armorup.mp3', 1.5)
 		
 				await $"../PlayerCharacter".wait(0.7)
 				$"../PlayerCharacter".play_sound('res://sounds/steel.mp3', 1)
 				$"../EnemyCharacter".take_damage(90)
-			if $"../..".level == 1:
+			if posmod($"../..".level, 3) == 1:
 				self.show() # fireplace
 				$"Healthbar".hide()
 				$"EnemySprite".set_texture(get_node("Extinguished").texture)
@@ -71,6 +70,12 @@ func take_damage(amount: int):
 				var ri = $"../..".enemies.find($"../GhostCharacter2")
 				$"../..".enemies.remove_at(ri)
 				$"../GhostCharacter3/Dialogue".show()
+			if posmod($"../..".level, 3) == 2:
+				$"EnemySprite".set_texture(get_node("Opened").texture)
+				$"../Skeleton".take_damage(9999)
+				self.show() # floorboard
+				$"Healthbar".hide()
+				
 				
 var bleedcount = 0 #init 
 func bleed(amount: int, turns: int):
@@ -151,8 +156,6 @@ func _ready():
 func _process(delta):
 	update_healthbar()
 	update_shield_icon_values()
-	if chilly == true:
-		take_damage(1)
 	
 
 func wait(seconds: float) -> void:
