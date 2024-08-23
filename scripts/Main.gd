@@ -21,16 +21,7 @@ var ripped_count := 0
 var viewing_win := false
 
 var recovered_card = null
-	
-var dead_enemies := 0
-func enemies_all_dead():
-	for enemy in enemies:
-		if enemy.health <= 0:
-			dead_enemies += 1
-	if dead_enemies == enemies.size():
-		return true
-	else:
-		return false
+
 
 var enemy_base_damage: int = 2 # for enemies
 var enemy_base_shield: int = 3
@@ -41,8 +32,9 @@ func _ready(): #level 0
 	$DeckHand.deck = deck
 	set_default_player_deck()
 	enemies.push_back($GameScreen/EnemyCharacter)
-	enemies[0].max_health = enemy_base_health #+ 90 # just for init and loophole explanation
-	enemies[0].health = enemy_base_health #+ 90
+	enemies[0].max_health = enemy_base_health + 90 # just for init and loophole explanation
+	enemies[0].health = enemy_base_health + 90
+	enemies.push_back($GameScreen/LoopholeSwitch)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -54,37 +46,47 @@ func _process(delta):
 	
 	if $GameScreen/PlayerCharacter.health <= 0:
 		game_control.transition(GameController.GameState.GAMEOVER)
-	elif enemies_all_dead() == true:
+	elif enemies.is_empty():
 		game_control.transition(GameController.GameState.VICTORY)
 	
 	#highlight enemy thats targeted
-	var targeted_enemy = enemies[targeted_enemy_index]
-	
-	if modulate_inc == true and n < 1.38:
-		targeted_enemy.modulate = Color(n,n,n) #n is used for selection display
-		targeted_enemy.scale = Vector2(1+n/10,1+n/10)
-		n += 0.005
-	else:
-		modulate_inc = false
-		targeted_enemy.modulate = Color(n,n,n)
-		targeted_enemy.scale = Vector2(1+n/10,1+n/10)
-		n -= 0.0075
-		if n < 0.99:
-			modulate_inc = true
+	if enemies.size() > 0:
+		var targeted_enemy = enemies[targeted_enemy_index]
+
+		if modulate_inc == true and n < 1.38:
+			targeted_enemy.modulate = Color(n,n,n) #n is used for selection display
+			targeted_enemy.scale = Vector2(1+n/10,1+n/10)
+			n += 0.005
+		else:
+			modulate_inc = false
+			targeted_enemy.modulate = Color(n,n,n)
+			targeted_enemy.scale = Vector2(1+n/10,1+n/10)
+			n -= 0.0075
+			if n < 0.99:
+				modulate_inc = true
 
 # enemy attacks
 	if game_control.current_state == GameController.GameState.ENEMY_TURN:
-		var enemydamagechange = $GameScreen/EnemyCharacter.damage_change # change this to iterate for multi enemy lvls
-		if posmod(level, LEVEL_LOOPS) == 0: #1 mushroom
+		if posmod(level, LEVEL_LOOPS) == 0:
+			var enemydamagechange = $GameScreen/EnemyCharacter.damage_change
 			if enemy_character_state == 0:
-				$GameScreen/EnemyCharacter.change_shield(enemy_base_shield)
+				$GameScreen/EnemyCharacter.change_shield(enemy_base_shield) #Purposely hardcoded
 			elif enemy_character_state == 1:
-				$GameScreen/PlayerCharacter.take_damage(enemy_base_damage + enemydamagechange)
+				player_character.take_damage(enemy_base_damage + enemydamagechange)
 			elif enemy_character_state == 2:
-				$GameScreen/PlayerCharacter.take_damage(2 + enemy_base_shield + enemydamagechange)
+				player_character.take_damage(2 + enemy_base_damage + enemydamagechange)
 		if posmod(level, LEVEL_LOOPS) == 1: # ghosts
-			pass
-		
+			if enemy_character_state == 0:
+				for enemy in enemies:
+					enemy.change_shield(enemy_base_shield)
+			elif enemy_character_state == 1:
+				for enemy in enemies:
+					enemy.change_attack(2)
+			elif enemy_character_state == 2:
+				for enemy in enemies:
+					player_character.take_damage(enemy_base_damage + enemy.damage_change)
+					await player_character.wait(0.25)
+				
 		enemy_character_state = posmod(enemy_character_state + 1, 3) # % but +
 		game_control.transition(GameController.GameState.PLAYER_TURN)
 		$GameScreen/PlayerCharacter.start_turn()
@@ -181,7 +183,8 @@ func _on_button_pressed(): # restart the game
 	targeted_enemy_index = 0 
 	enemies.clear()
 	enemies.push_back($GameScreen/EnemyCharacter)
-	dead_enemies = 0
+	enemies.push_back($GameScreen/LoopholeSwitch)
+
 	
 	enemy_base_damage = 2 # this is init, it increases every win
 	enemy_base_shield = 3
@@ -191,7 +194,7 @@ func _on_button_pressed(): # restart the game
 	reset_enemy_stats()
 
 
-func reset_enemy_stats(): # just for game over restart for now
+func reset_enemy_stats(): 
 	for enemy in enemies:
 		enemy.shield = 0
 		enemy.damage_change = 0
@@ -250,7 +253,7 @@ func _on_button_v_pressed(): #victory button
 	player_character.mana = player_character.current_mana_cap
 	#increase difficulty
 	enemy_base_damage += floor(level)#  it increases every win
-	enemy_base_shield += floor(level ) # can divide
+	enemy_base_shield += floor(level) # can divide
 	
 	
 
@@ -260,15 +263,17 @@ func change_enemies(level): # this is for transitinoing between lvls
 	$GameScreen/EnemyCharacter.hide() #mushroom
 	$GameScreen/GhostCharacter2.hide()
 	$GameScreen/GhostCharacter1.hide()
+	$GameScreen/LoopholeSwitch.hide()
 	if posmod(level, LEVEL_LOOPS) == 0: #mushroom stage
 		enemies.push_back($GameScreen/EnemyCharacter)
+		enemies.push_back($GameScreen/LoopholeSwitch)
 	elif posmod(level, LEVEL_LOOPS) == 1: # ghosts
 		enemies.push_back($GameScreen/GhostCharacter2)
 		enemies.push_back($GameScreen/GhostCharacter1)
 	
-	reset_enemy_stats()
+	reset_enemy_stats() # this shows them
 	targeted_enemy_index = 0
-	dead_enemies = 0
+
 
 
 func change_target(dir: String): # this is just for changing in the battle

@@ -10,8 +10,7 @@ var current_mana_cap: int = 3
 @export var bleeding: bool = false
 var saved_amount: int = 0 # forbleeding
 var saved_turns: int = 0 # forbleeding
-
-
+@export var is_loophole := false
 
 func spend_mana(amount: int):
 	if mana - amount >= 0:
@@ -46,8 +45,19 @@ func take_damage(amount: int):
 				play_sound("res://sounds/playerhit_hard.mp3", 0.5)
 	if health <= 0:
 		self.hide()
+		var possible_enemy_index = $"../..".enemies.find(self)
+		if possible_enemy_index >= 0:
+			await $"../PlayerCharacter".wait(0.2)
+			$"../..".enemies.remove_at(possible_enemy_index)
+		if is_loophole == true: ## LOOPHOLE EFFECT BASED ON LVL
+			if $"../..".level == 0: # first level
 
-			
+				$"../../Animations/Anvil/AnvilAnim".play("AnvilDrop")
+				$"../PlayerCharacter".play_sound('res://sounds/armorup.mp3', 1.5)
+		
+				await $"../PlayerCharacter".wait(0.7)
+				$"../PlayerCharacter".play_sound('res://sounds/steel.mp3', 1)
+				$"../EnemyCharacter".take_damage(90)
 
 var bleedcount = 0 #init 
 func bleed(amount: int, turns: int):
@@ -87,10 +97,6 @@ func update_healthbar(): # hp bar graphical update only
 		($Healthbar as ProgressBar).value = health
 	if health < 0:
 		health = 0 #(for consistency with visuals)
-	var current_size = $Healthbar.size.y
-	$Healthbar.custom_minimum_size = Vector2(90,24)
-	var max_x = max(max_health * 20, 90)
-	$Healthbar.size = Vector2(max_x, current_size)
 	($"Healthbar/HealthText").set_text(str(health) + "/" + str(max_health))
 
 func update_shield_icon_values():
