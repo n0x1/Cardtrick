@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://cg841d3cpmpjd"]
+[gd_scene load_steps=29 format=3 uid="uid://cg841d3cpmpjd"]
 
 [ext_resource type="PackedScene" uid="uid://bnj8i1ngctqf2" path="res://scenes/deck_n_hand.tscn" id="1_vfrus"]
 [ext_resource type="Script" path="res://scripts/Main.gd" id="1_wrmrq"]
@@ -24,6 +24,7 @@
 [ext_resource type="Texture2D" uid="uid://dirfxdnklv5fk" path="res://sprites/Enemies/Reaper.png" id="17_ai3pj"]
 [ext_resource type="Texture2D" uid="uid://d2ny2gbx4tg4d" path="res://sprites/animation_frames/floorboard_closed.png" id="18_b8vj0"]
 [ext_resource type="Texture2D" uid="uid://bbrldc3hxr1kj" path="res://sprites/animation_frames/floorboard_open.png" id="19_co2bm"]
+[ext_resource type="Texture2D" uid="uid://bj5ovf6ewl0ti" path="res://background.webp" id="25_4rnlr"]
 
 [sub_resource type="Animation" id="Animation_mornk"]
 resource_name = "AnvilDrop"
@@ -1223,6 +1224,14 @@ texture_normal = ExtResource("10_o1fi1")
 texture_pressed = ExtResource("12_fyua0")
 texture_hover = ExtResource("11_yg7ln")
 stretch_mode = 0
+
+[node name="TextureRect" type="TextureRect" parent="."]
+z_index = -4
+offset_right = 2243.0
+offset_bottom = 1575.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("25_4rnlr")
 
 [connection signal="card_activated" from="DeckHand" to="." method="_on_deck_hand_card_activated"]
 [connection signal="hide_deck_view" from="DeckHand" to="." method="_on_deck_hand_hide_deck_view"]
